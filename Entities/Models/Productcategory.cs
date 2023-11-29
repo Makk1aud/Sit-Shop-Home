@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Repository;
+namespace Entities.Models;
 
 public partial class Productcategory
 {
