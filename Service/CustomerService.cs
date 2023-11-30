@@ -27,6 +27,7 @@ namespace Service
 
         public CustomerDTO CreateCustomer(CustomerForManipulationDTO customerForManipulation, DateOnly birth)
         {
+            //Проверка на GenderI, что такой гендер есть в БД
             var customer = _mapper.Map<Customer>(customerForManipulation);
             customer.CustomerBirth = birth;
 
