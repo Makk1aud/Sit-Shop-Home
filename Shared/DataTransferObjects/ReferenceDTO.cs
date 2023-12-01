@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shared.DataTransferObjects
 {
+    //Класс для таблиц (статичных справочников) в которых есть только дополнения для других таблиц, по типу гендера или категорий
     public record class ReferenceDTO
     {
         public Guid id { get; init; }

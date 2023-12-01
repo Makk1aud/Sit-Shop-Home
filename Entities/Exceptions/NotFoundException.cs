@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Entities.Exceptions
 {
-    public abstract class NotFoundException :Exception
+    public class NotFoundException<T> : Exception
     {
-        public NotFoundException(string message)
-            : base(message)
+        public NotFoundException(Guid id)
+            : base($"object {typeof(T).Name} with id: {id} not found")
         {
 
         }

@@ -12,10 +12,14 @@ namespace Service
     public class ServiceManager : IServiceManager
     {
         private readonly Lazy<ICustomerService> _customerService;
-        public ServiceManager(IMapper mapper, IRepositoryManager repositoryManager, ILoggerManager loggerManager)
+        private readonly Lazy<IGenderService> _genderService;
+        public ServiceManager(IMapper mapper, IRepositoryManager repositoryManager)
         {
-            _customerService = new Lazy<ICustomerService>(() => new CustomerService(repositoryManager, loggerManager, mapper));
+            _customerService = new Lazy<ICustomerService>(() => new CustomerService(repositoryManager, mapper));
+            _genderService = new Lazy<IGenderService>(() => new GenderService(repositoryManager, mapper));
         }
         public ICustomerService Customer => _customerService.Value;
+
+        public IGenderService Gender => _genderService.Value;
     }
 }

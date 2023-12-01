@@ -9,6 +9,7 @@ namespace Contracts
     public interface IRepositoryManager
     {
         ICustomerRepository Customer { get; }
+        IGenderRepository Gender { get; }
         void Save();
     }
 }

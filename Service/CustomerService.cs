@@ -15,20 +15,19 @@ namespace Service
     public class CustomerService : ICustomerService
     {
         private readonly IRepositoryManager _repositoryManager;
-        private readonly ILoggerManager _loggerManager;
         private readonly IMapper _mapper;
 
-        public CustomerService(IRepositoryManager repositoryManager, ILoggerManager loggerManager, IMapper mapper)
+        public CustomerService(IRepositoryManager repositoryManager, IMapper mapper)
         {
             _repositoryManager = repositoryManager;
-            _loggerManager = loggerManager;
             _mapper = mapper;
         }
 
         public CustomerDTO CreateCustomer(CustomerForManipulationDTO customerForManipulation, DateOnly birth)
         {
-            //Проверка на GenderI, что такой гендер есть в БД
             var customer = _mapper.Map<Customer>(customerForManipulation);
+            CheckGenderIfItExist((Guid)customerForManipulation.GenderId, trackChanges:false);
+
             customer.CustomerBirth = birth;
 
             _repositoryManager.Customer.CreateCustomer(customer);
@@ -61,10 +60,11 @@ namespace Service
             return customersToReturn;
         }
 
-        public CustomerDTO UpdateCustomer(Guid customerId,CustomerForManipulationDTO customerForManipulation, bool trackChanges, DateOnly? birth = null)
+        public CustomerDTO UpdateCustomer(Guid customerId, CustomerForManipulationDTO customerForManipulation, bool trackChanges, DateOnly? birth = null)
         {
-            //Проверка на гендер
             var customer = GetCustomerAndCheckIfItExist(customerId, trackChanges);
+            CheckGenderIfItExist((Guid)customerForManipulation.GenderId, trackChanges);
+
             _mapper.Map(customerForManipulation, customer);
 
             customer.CustomerBirth = birth.HasValue ? (DateOnly)birth : customer.CustomerBirth; 
@@ -78,8 +78,15 @@ namespace Service
         {
             var customer = _repositoryManager.Customer.GetCustomer(customerId, trackChanges);
             if (customer is null)
-                throw new CustomerNotFoundException(customerId);
+                throw new NotFoundException<Customer>(customerId);
             return customer;
+        }
+
+        private void CheckGenderIfItExist(Guid genderId, bool trackChanges)
+        {
+            var gender = _repositoryManager.Gender.GetGender(genderId, trackChanges);
+            if(gender is null)
+                throw new NotFoundException<Gender>(genderId);  
         }
     }
 }
