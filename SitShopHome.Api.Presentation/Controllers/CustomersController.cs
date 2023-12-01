@@ -27,7 +27,7 @@ namespace SitShopHome.Api.Presentation.Controllers
             return Ok(customers);
         }
 
-        [HttpGet("{customerId}", Name ="GetCustomerById")]
+        [HttpGet("{customerId}", Name = "GetCustomerById")]
         public IActionResult GetCustomer(Guid customerId)
         {
             var customer = _serviceManager.Customer.GetCustomer(customerId, trackChanges: false);
@@ -37,6 +37,8 @@ namespace SitShopHome.Api.Presentation.Controllers
         [HttpPost]
         public IActionResult CreateCustomer([FromBody] CustomerForManipulationDTO customerForManipulation, DateOnly? birth)
         {
+            //Проверка на уникальный логин
+            //Убрать проверку и сделать фильтр
             if (customerForManipulation is null || birth is null)
                 return BadRequest("Sent object cant be null");
 
@@ -46,6 +48,26 @@ namespace SitShopHome.Api.Presentation.Controllers
             var customer = _serviceManager.Customer.CreateCustomer(customerForManipulation, (DateOnly)birth);
 
             return CreatedAtRoute("GetCustomerById", new { customerId = customer.CustomerId }, customer);
+        }
+
+        [HttpDelete("{customerId}")]
+        public IActionResult DeleteCustomer(Guid customerId)
+        {
+            _serviceManager.Customer.DeleteCustomer(customerId, trackChanges: false);
+            return NoContent();
+        }
+
+        [HttpPut("{customerId}")]
+        public IActionResult UpdateCustomer(Guid customerId, [FromBody] CustomerForManipulationDTO customerForManipulation, DateOnly? birth)
+        {
+            if (customerForManipulation is null)
+                return BadRequest("Sent object cant be null");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var UpdatedCustomer = _serviceManager.Customer.UpdateCustomer(customerId, customerForManipulation, trackChanges: true, birth);
+            return Ok(UpdatedCustomer);
         }
     }
 }

@@ -61,10 +61,13 @@ namespace Service
             return customersToReturn;
         }
 
-        public CustomerDTO UpdateCustomer(Guid customerId,CustomerForManipulationDTO customerForManipulation, bool trackChanges)
+        public CustomerDTO UpdateCustomer(Guid customerId,CustomerForManipulationDTO customerForManipulation, bool trackChanges, DateOnly? birth = null)
         {
+            //Проверка на гендер
             var customer = GetCustomerAndCheckIfItExist(customerId, trackChanges);
             _mapper.Map(customerForManipulation, customer);
+
+            customer.CustomerBirth = birth.HasValue ? (DateOnly)birth : customer.CustomerBirth; 
             _repositoryManager.Save();
 
             var customerToReturn = _mapper.Map<CustomerDTO>(customer);

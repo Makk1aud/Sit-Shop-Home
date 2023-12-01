@@ -12,7 +12,7 @@ namespace Service.Contracts
         IEnumerable<CustomerDTO> GetCustomers(bool trackChanges);
         CustomerDTO GetCustomer(Guid customerId, bool trackChanges);
         CustomerDTO CreateCustomer(CustomerForManipulationDTO customerForManipulation, DateOnly birth);
-        CustomerDTO UpdateCustomer(Guid customerId, CustomerForManipulationDTO customerForManipulation, bool trackChanges);
+        CustomerDTO UpdateCustomer(Guid customerId, CustomerForManipulationDTO customerForManipulation, bool trackChanges, DateOnly? birth = null);
         void DeleteCustomer(Guid customerId, bool trackChanges);
     }
 }
