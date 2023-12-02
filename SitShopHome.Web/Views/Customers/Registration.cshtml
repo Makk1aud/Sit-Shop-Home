@@ -7,34 +7,46 @@
 
 <form method="post">
     <div class="panel">
+
         <div class="blockInput">
             <label>Enter your name</label>
             <input type="text" asp-for="CustomerName"/>
+            <span asp-validation-for="CustomerName"/>
         </div>
 
         <div class="blockInput">
             <label>Enter your surname</label>
             <input type="text" asp-for="CustomerSurname"/>
+            <span asp-validation-for="CustomerSurname"/>
         </div>
         
         <div class="blockInput">
             <label>Enter your phone</label>
             <input type="text" asp-for="CustomerPhone"/>
+            <span asp-validation-for="CustomerPhone"/>
         </div>
 
         <div class="blockInput">
             <label>Enter your email</label>
             <input type="text" asp-for="CustomerEmail"/>
+            <span asp-validation-for="CustomerEmail"/>
         </div>
 
         <div class="blockInput">
             <label>Enter your Gender</label>
             <input type="text" asp-for="GenderId"/>
+            <span asp-validation-for="GenderId"/>
         </div>
 
         <div class="blockInput">
             <label>Enter your password</label>
             <input type="text" asp-for="CustomerPassword"/>
+            <span asp-validation-for="CustomerPassword"/>
+        </div>
+
+        <div class="blockInput">
+            <label>Enter your birthday</label>
+            <input type="date" name="birthday"/>
         </div>
 
 
@@ -42,6 +54,8 @@
             <button type="submit" class="btn btn-primary">Register</button>
             <button class="btn btn-secondary">Go Back</button>
         </div>
+
+        
 
     </div>    
 </form>

@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitShopHome.Api.Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitShopHome.Web", "SitShopHome.Web\SitShopHome.Web.csproj", "{D2FC752D-76FF-409E-AAAD-9D1B35E0B6B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonSendRequests", "JsonSendRequests\JsonSendRequests.csproj", "{CFBDEDCF-5C9C-4418-8E77-E2A8CFB131AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonSendRequests.Contracts", "JsonSendRequests.Contracts\JsonSendRequests.Contracts.csproj", "{DEDB7ABA-9252-45BB-BB7C-FB949023A4A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +71,14 @@ Global
 		{6EECB347-15F4-45E9-929D-C6A1E2EDB7E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EECB347-15F4-45E9-929D-C6A1E2EDB7E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EECB347-15F4-45E9-929D-C6A1E2EDB7E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFBDEDCF-5C9C-4418-8E77-E2A8CFB131AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFBDEDCF-5C9C-4418-8E77-E2A8CFB131AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFBDEDCF-5C9C-4418-8E77-E2A8CFB131AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFBDEDCF-5C9C-4418-8E77-E2A8CFB131AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEDB7ABA-9252-45BB-BB7C-FB949023A4A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEDB7ABA-9252-45BB-BB7C-FB949023A4A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEDB7ABA-9252-45BB-BB7C-FB949023A4A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEDB7ABA-9252-45BB-BB7C-FB949023A4A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,6 +2,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\JsonSendRequests\JsonSendRequests.csproj" />
+    <ProjectReference Include="..\JsonSendRequests.Contracts\JsonSendRequests.Contracts.csproj" />
+    <ProjectReference Include="..\Contracts\Contracts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
