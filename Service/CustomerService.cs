@@ -78,7 +78,7 @@ namespace Service
         {
             var customer = _repositoryManager.Customer.GetCustomer(customerId, trackChanges);
             if (customer is null)
-                throw new NotFoundException<Customer>(customerId);
+                throw new GenericNotFoundException<Customer>(customerId);
             return customer;
         }
 
@@ -86,7 +86,7 @@ namespace Service
         {
             var gender = _repositoryManager.Gender.GetGender(genderId, trackChanges);
             if(gender is null)
-                throw new NotFoundException<Gender>(genderId);  
+                throw new GenericNotFoundException<Gender>(genderId);  
         }
     }
 }

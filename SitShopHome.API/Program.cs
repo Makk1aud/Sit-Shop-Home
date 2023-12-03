@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Repository;
+using SitShopHome.Api.Presentation.ActionFilters;
 using SitShopHome.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,7 @@ builder.Services.AddControllers(options =>
 
 
 builder.Services.AddScoped<SitshophomeContext>();
+builder.Services.AddScoped<ValidationFilterAttribute>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x =>

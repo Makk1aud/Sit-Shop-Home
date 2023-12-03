@@ -20,7 +20,7 @@ namespace SitShopHome.API.Extensions
                         context.Response.StatusCode = contextFeatures.Error switch
                         {
                             BadRequestException => StatusCodes.Status400BadRequest,
-                            NotFoundException<object> => StatusCodes.Status404NotFound,
+                            NotFoundException => StatusCodes.Status404NotFound,
                             _ => StatusCodes.Status500InternalServerError
                         };
 

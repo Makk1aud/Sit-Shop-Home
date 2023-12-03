@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using SitShopHome.Api.Presentation.ActionFilters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,14 +36,9 @@ namespace SitShopHome.Api.Presentation.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult CreateGender([FromBody] GenderForManipulationDTO genderForManipulation)
         {
-            if (genderForManipulation is null)
-                return BadRequest("Sent object is null");
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var genderToReturn = _serviceManager.Gender.CreateGender(genderForManipulation);
             return CreatedAtRoute("GenderById", new { genderId = genderToReturn.id }, genderToReturn);
         }
@@ -55,14 +51,9 @@ namespace SitShopHome.Api.Presentation.Controllers
         }
 
         [HttpPut("{genderId}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult UpdateGender(Guid genderId, GenderForManipulationDTO genderForManipulation)
         {
-            if (genderForManipulation is null)
-                return BadRequest("Sent object is null");
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var genderToReturn = _serviceManager.Gender.UpdateGender(genderId, genderForManipulation, trackChanges: true);
             return Ok(genderToReturn);
         }

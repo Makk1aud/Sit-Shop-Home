@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using SitShopHome.Api.Presentation.ActionFilters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,15 +36,12 @@ namespace SitShopHome.Api.Presentation.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult CreateCustomer([FromBody] CustomerForManipulationDTO customerForManipulation, DateOnly? birth)
         {
             //Проверка на уникальный логин
-            //Убрать проверку и сделать фильтр
-            if (customerForManipulation is null || birth is null)
-                return BadRequest("Sent object cant be null");
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (birth is null)
+                return BadRequest("Sent birth cant be null");
 
             var customer = _serviceManager.Customer.CreateCustomer(customerForManipulation, (DateOnly)birth);
 
@@ -58,14 +56,9 @@ namespace SitShopHome.Api.Presentation.Controllers
         }
 
         [HttpPut("{customerId}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult UpdateCustomer(Guid customerId, [FromBody] CustomerForManipulationDTO customerForManipulation, DateOnly? birth)
         {
-            if (customerForManipulation is null)
-                return BadRequest("Sent object cant be null");
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var UpdatedCustomer = _serviceManager.Customer.UpdateCustomer(customerId, customerForManipulation, trackChanges: true, birth);
             return Ok(UpdatedCustomer);
         }
