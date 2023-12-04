@@ -16,6 +16,9 @@ namespace SitShopHome.API
                 .ForMember("title", opts => opts.MapFrom(x => x.GenderTitle))
                 .ForMember("id", opts => opts.MapFrom(x => x.GenderId));
             CreateMap<GenderForManipulationDTO, Gender>().ReverseMap();
+
+            CreateMap<Product, ProductDTO>();
+            CreateMap<ProductForManipulationDTO, Product>().ReverseMap();
         }
     }
 }
