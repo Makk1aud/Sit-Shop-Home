@@ -12,13 +12,19 @@ public class CustomerJsonSendRequest : ICustomerJsonSendRequest
     {
         string url = _baseUrl + $"?birth={birth.ToString()}";
         string body = JsonSerializer.Serialize(customerDto);
-        System.Console.WriteLine(body);
         JsonService.HttpPostRequest(url, body);
     }
 
     public void DeleteObject(Guid id)
     {
         throw new NotImplementedException();
+    }
+
+    public Customer? FindCustomer(string login, string password)
+    {
+        string url = _baseUrl + $"?login={login},password={password}";
+        var customerObj = JsonService.HttpGetRequest(url) as Customer;
+        return customerObj;
     }
 
     public IEnumerable<Customer> GetAllObject()

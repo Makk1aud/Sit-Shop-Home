@@ -1,0 +1,32 @@
+@model CustomersToEnterViewModel
+@{
+    ViewData["Title"] = "Welcome to Sit Shop Home";
+}
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+
+    <div class="Panel">
+        <div class="BlockInput">
+            <label> Enter your login</label>
+            <input asp-for="LoginEmail"/> 
+            <span asp-validation-for="LoginEmail"></span>
+        </div>
+        <div class="BlockInput">
+            <label> Enter your password</label>
+            <input asp-for="Password"/> 
+            <span asp-validation-for="Password"></span>
+        </div>
+
+        <div class="BlockButtons">
+            <button class="btn btn-primary" type="submit">Log In</button>
+        </div>
+    </div>
+</form>
+
+
+<style>
+    span{
+        color:red;
+    }
+</style>

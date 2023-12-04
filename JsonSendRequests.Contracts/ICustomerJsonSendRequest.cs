@@ -8,4 +8,5 @@ public interface ICustomerJsonSendRequest : IJsonSendRequest<Customer>
 {
     void CreateCustomer(CustomerForManipulationDTO customerDto, DateOnly birth);
     void UpdateCustomer(Guid id, CustomerForManipulationDTO customerDto, DateOnly birth);
+    Customer? FindCustomer(string login, string password);
 }

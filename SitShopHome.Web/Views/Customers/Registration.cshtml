@@ -1,4 +1,4 @@
-@model Shared.DataTransferObjects.CustomerForManipulationDTO 
+@model Shared.DataTransferObjects.CustomerForManipulationDTO
 @{
     ViewData["Title"] = "Registration";
 }
@@ -7,46 +7,46 @@
 
 <form method="post">
     <div class="panel">
-
         <div class="blockInput">
             <label>Enter your name</label>
             <input type="text" asp-for="CustomerName"/>
-            <span asp-validation-for="CustomerName"/>
+            <span asp-validation-for="CustomerName"></span>
         </div>
 
         <div class="blockInput">
             <label>Enter your surname</label>
             <input type="text" asp-for="CustomerSurname"/>
-            <span asp-validation-for="CustomerSurname"/>
+            <span asp-validation-for="CustomerSurname"></span>
         </div>
         
         <div class="blockInput">
             <label>Enter your phone</label>
             <input type="text" asp-for="CustomerPhone"/>
-            <span asp-validation-for="CustomerPhone"/>
+            <span asp-validation-for="CustomerPhone"></span>
         </div>
 
         <div class="blockInput">
             <label>Enter your email</label>
             <input type="text" asp-for="CustomerEmail"/>
-            <span asp-validation-for="CustomerEmail"/>
+            <span asp-validation-for="CustomerEmail"></span>
         </div>
 
         <div class="blockInput">
             <label>Enter your Gender</label>
             <input type="text" asp-for="GenderId"/>
-            <span asp-validation-for="GenderId"/>
+            <span asp-validation-for="GenderId"></span>
         </div>
 
         <div class="blockInput">
             <label>Enter your password</label>
             <input type="text" asp-for="CustomerPassword"/>
-            <span asp-validation-for="CustomerPassword"/>
+            <span asp-validation-for="CustomerPassword"></span>
         </div>
 
         <div class="blockInput">
             <label>Enter your birthday</label>
             <input type="date" name="birthday"/>
+            <span>@ViewBag.BirthIsEmpty</span>
         </div>
 
 
@@ -54,8 +54,12 @@
             <button type="submit" class="btn btn-primary">Register</button>
             <button class="btn btn-secondary">Go Back</button>
         </div>
-
-        
-
     </div>    
 </form>
+
+<style>
+    span{
+        color: red;
+    }
+    
+</style>

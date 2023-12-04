@@ -11,8 +11,9 @@ namespace Shared.DataTransferObjects
 {
     public record class CustomerForManipulationDTO
     {
+
         [JsonPropertyName("customerName")]
-        [Required(ErrorMessage ="Name filed is required")]
+        [Required(ErrorMessage ="Name filed required")]
         [MaxLength(30, ErrorMessage ="For field Name max length is 30 chars")]
         public string? CustomerName { get; init; }
 

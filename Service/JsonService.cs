@@ -11,6 +11,11 @@ public static class JsonService
         StringContent content = new StringContent(body, Encoding.UTF8, "application/json");
         var response =  _client.PostAsync(url, content).Result;
         Console.WriteLine(response.Content.ToString());
-      
+    }
+
+    public static object HttpGetRequest(string url)
+    {
+        var response = _client.GetAsync(url).Result;
+        return response;
     }
 }

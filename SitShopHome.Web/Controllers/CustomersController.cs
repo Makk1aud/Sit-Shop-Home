@@ -1,6 +1,8 @@
+using System.Security.Cryptography.X509Certificates;
 using JsonSendRequests.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DataTransferObjects;
+using SitShopHome.Web.Models;
 
 namespace SitShopHome.Web.Controllers
 {
@@ -20,12 +22,36 @@ namespace SitShopHome.Web.Controllers
         [HttpPost]
         public IActionResult Registration(CustomerForManipulationDTO? customerObj, DateOnly birthday)
         {
+            if(customerObj == null)
+                return View();
+            if(birthday == null)
+            {
+                ViewBag.BirthIsEmpty = "Birth field is required";
+                return View(customerObj);
+            }
             if(!ModelState.IsValid)
                 return View(customerObj);
-            if(customerObj == null || birthday == null)
-                return View(customerObj);
+            
             
             _customerJsonRequest.CreateCustomer(customerObj, birthday);
+            return RedirectToAction("LogInSystem");
+        }
+
+        public IActionResult LogInSystem()=> View();
+        
+        [HttpPost]
+        public IActionResult LogInSystem(CustomersToEnterViewModel customerObj)
+        {
+            if(customerObj==null)
+                return View();
+            if(!ModelState.IsValid)
+                return View(customerObj);
+            var customer = _customerJsonRequest.FindCustomer(customerObj.LoginEmail, customerObj.Password);
+            if(customer == null)
+            {
+                ViewBag.NotFoundCustomer = "Not right login or password";
+                return View(customerObj);
+            }
             return RedirectToAction("Index","Home" );
         }
 
