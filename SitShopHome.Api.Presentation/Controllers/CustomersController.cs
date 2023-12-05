@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using SitShopHome.Api.Presentation.ActionFilters;
+using SitShopHome.API.Presentation;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +18,7 @@ namespace SitShopHome.Api.Presentation.Controllers
 {
     [ApiController]
     [Route("api/customers")]
+    [Authorize]
     public class CustomersController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
@@ -33,19 +40,6 @@ namespace SitShopHome.Api.Presentation.Controllers
         {
             var customer = _serviceManager.Customer.GetCustomer(customerId, trackChanges: false);
             return Ok(customer);
-        }
-
-        [HttpPost]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public IActionResult CreateCustomer([FromBody] CustomerForManipulationDTO customerForManipulation, DateOnly? birth)
-        {
-            //Проверка на уникальный логин
-            if (birth is null)
-                return BadRequest("Sent birth cant be null");
-
-            var customer = _serviceManager.Customer.CreateCustomer(customerForManipulation, (DateOnly)birth);
-
-            return CreatedAtRoute("GetCustomerById", new { customerId = customer.CustomerId }, customer);
         }
 
         [HttpDelete("{customerId}")]

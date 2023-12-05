@@ -74,6 +74,17 @@ namespace Service
             return customerToReturn;
         }
 
+        public CustomerDTO GetCustomerByEmailAndPassword(string email, string password, bool trackChanges)
+        {
+            var customer = _repositoryManager.Customer.GetCustomerByEmailAndPassword(email, password, trackChanges);
+            if(customer is null)
+                throw new NotFoundException($"Customer with email:{email} and password:{password} not found");
+
+            var customerToReturn = _mapper.Map<CustomerDTO>(customer);
+
+            return customerToReturn;
+        }
+
         private Customer GetCustomerAndCheckIfItExist(Guid customerId, bool trackChanges)
         {
             var customer = _repositoryManager.Customer.GetCustomer(customerId, trackChanges);

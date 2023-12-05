@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using SitShopHome.Api.Presentation.ActionFilters;
@@ -43,6 +44,7 @@ namespace SitShopHome.Api.Presentation.Controllers
             return CreatedAtRoute("GenderById", new { genderId = genderToReturn.id }, genderToReturn);
         }
 
+        [Authorize]
         [HttpDelete("{genderId}")]
         public IActionResult DeleteGender(Guid genderId)
         {
@@ -50,6 +52,7 @@ namespace SitShopHome.Api.Presentation.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpPut("{genderId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult UpdateGender(Guid genderId, GenderForManipulationDTO genderForManipulation)

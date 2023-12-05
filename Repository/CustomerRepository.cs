@@ -23,6 +23,11 @@ namespace Repository
             FindByContidion(x => x.CustomerId.Equals(customerId), trackChanges)
             .SingleOrDefault();
 
+        public Customer GetCustomerByEmailAndPassword(string email, string password, bool trackChanges) =>
+            FindByContidion(x => x.CustomerEmail.Equals(email)
+            && x.CustomerPassword.Equals(password), trackChanges)
+            .SingleOrDefault();
+
         public IEnumerable<Customer> GetCustomers(bool trackChanges) =>
             FindAll(trackChanges).ToList();
     }

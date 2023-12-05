@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using SitShopHome.Api.Presentation.ActionFilters;
@@ -35,6 +36,7 @@ namespace SitShopHome.Api.Presentation.Controllers
             return Ok(products);
         }
 
+        [Authorize]
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult CreateProduct([FromBody] ProductForManipulationDTO productForManipulation)
@@ -43,6 +45,7 @@ namespace SitShopHome.Api.Presentation.Controllers
             return CreatedAtRoute("ProductById", new { productId = product.ProductId }, product);
         }
 
+        [Authorize]
         [HttpPut("{productId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult UpdateProduct([FromBody] ProductForManipulationDTO productForManipulation, Guid productId)
@@ -51,6 +54,7 @@ namespace SitShopHome.Api.Presentation.Controllers
             return Ok(product);
         }
 
+        [Authorize]
         [HttpDelete("{productId}")]
         public IActionResult DeleteProduct(Guid productId)
         {
