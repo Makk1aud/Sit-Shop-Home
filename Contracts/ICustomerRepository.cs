@@ -13,5 +13,6 @@ namespace Contracts
         Customer GetCustomer(Guid customerId, bool trackChanges);
         void DeleteCustomer(Customer customer);
         void CreateCustomer(Customer customer);
+        Customer GetCustomerByEmailAndPassword(string email, string password, bool trackChanges);
     }
 }
