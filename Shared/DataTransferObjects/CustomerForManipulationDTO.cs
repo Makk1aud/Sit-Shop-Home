@@ -36,7 +36,7 @@ namespace Shared.DataTransferObjects
 
         [JsonPropertyName("customerPassword")]
         [Required(ErrorMessage = "Password filed is required")]
-        [MaxLength(30, ErrorMessage = "For field Password max length is 20 chars")]
+        [MaxLength(20, ErrorMessage = "For field Password max length is 20 chars")]
         public string? CustomerPassword { get; init; }
 
         //[FromQuery(Name ="date")]

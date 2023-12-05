@@ -10,6 +10,7 @@ namespace Contracts
     {
         ICustomerRepository Customer { get; }
         IGenderRepository Gender { get; }
+        IProductRepository Product { get; }
         void Save();
     }
 }

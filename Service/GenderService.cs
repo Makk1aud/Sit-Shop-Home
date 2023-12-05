@@ -68,7 +68,7 @@ namespace Service
         {
             var gender = _repositoryManger.Gender.GetGender(genderId, trackChanges);
             if (gender is null)
-                throw new NotFoundException<Gender>(genderId);
+                throw new GenericNotFoundException<Gender>(genderId);
 
             return gender;
         }

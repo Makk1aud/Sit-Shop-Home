@@ -14,5 +14,6 @@ namespace Service.Contracts
         CustomerDTO CreateCustomer(CustomerForManipulationDTO customerForManipulation, DateOnly birth);
         CustomerDTO UpdateCustomer(Guid customerId, CustomerForManipulationDTO customerForManipulation, bool trackChanges, DateOnly? birth = null);
         void DeleteCustomer(Guid customerId, bool trackChanges);
+        CustomerDTO GetCustomerByEmailAndPassword(string email, string password, bool trackChanges);
     }
 }

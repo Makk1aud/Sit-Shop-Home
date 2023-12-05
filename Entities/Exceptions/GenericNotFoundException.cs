@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Entities.Exceptions
 {
-    public class NotFoundException : Exception
+    public class GenericNotFoundException<T> : NotFoundException
     {
-        public NotFoundException(string message)
-            : base(message)
+        public GenericNotFoundException(Guid id)
+            : base($"object {typeof(T).Name} with id: {id} not found")
         {
-
         }
     }
 }
