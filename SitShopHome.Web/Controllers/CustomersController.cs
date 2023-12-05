@@ -33,7 +33,12 @@ namespace SitShopHome.Web.Controllers
                 return View(customerObj);
             
             
-            _customerJsonRequest.CreateCustomer(customerObj, birthday);
+            var result = _customerJsonRequest.CreateCustomer(customerObj, birthday);
+            if(result != System.Net.HttpStatusCode.OK)
+            {
+                ViewBag.NotOk = "Something went wrong";
+                return View(customerObj);
+            }
             return RedirectToAction("LogInSystem");
         }
 
@@ -42,16 +47,18 @@ namespace SitShopHome.Web.Controllers
         [HttpPost]
         public IActionResult LogInSystem(CustomersToEnterViewModel customerObj)
         {
-            if(customerObj==null)
+            if(customerObj == null)
                 return View();
             if(!ModelState.IsValid)
                 return View(customerObj);
+
             var customer = _customerJsonRequest.FindCustomer(customerObj.LoginEmail, customerObj.Password);
+
             if(customer == null)
             {
-                ViewBag.NotFoundCustomer = "Not right login or password";
                 return View(customerObj);
-            }
+            } 
+            
             return RedirectToAction("Index","Home" );
         }
 
