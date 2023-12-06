@@ -3,6 +3,7 @@ using JsonSendRequests.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DataTransferObjects;
 using SitShopHome.Web.Models;
+using SitShopHome.Web.Services;
 
 namespace SitShopHome.Web.Controllers
 {
@@ -58,9 +59,16 @@ namespace SitShopHome.Web.Controllers
             {
                 return View(customerObj);
             } 
-            
-            return RedirectToAction("Index","Home" );
+            GlobalData.Application["Customer"] = customer;
+            return RedirectToAction("MainPage");
         }
+
+
+        public IActionResult MainPage()
+        {
+            ViewData["FullName"] = (GlobalData.Application["Customer"] as CustomerDTO).CustomerFullName;
+            return View();
+        }  
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

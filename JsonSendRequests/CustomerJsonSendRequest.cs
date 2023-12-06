@@ -25,7 +25,7 @@ public class CustomerJsonSendRequest : ICustomerJsonSendRequest
         throw new NotImplementedException();
     }
 
-    public Customer? FindCustomer(string login, string password)
+    public CustomerDTO? FindCustomer(string login, string password)
     {
         string url = _baseUrlAuth + $"/Login?email={login}&password={password}";
         var response = JsonService.HttpPostRequest(url);
@@ -37,21 +37,20 @@ public class CustomerJsonSendRequest : ICustomerJsonSendRequest
         return customer;
     }
 
-    public IEnumerable<Customer> GetAllObject()
+    public IEnumerable<CustomerDTO> GetAllObject()
     {
         throw new NotImplementedException();
     }
 
-    public Customer? GetCustomer(Guid id, string token)
+    public CustomerDTO? GetCustomer(Guid id, string token)
     {
         string url = _baseUrl +$"/{id}";
         var response =  JsonService.HttpGetRequest(url,token);
         var customerDto = JsonSerializer.Deserialize<CustomerDTO>(response.ToString());
-        // Конверитировать 
-        return customer ?? null;
+        return customerDto;
     }
 
-    public Customer? GetObject(Guid id)
+    public CustomerDTO? GetObject(Guid id)
     {
         throw new NotImplementedException();
     }
