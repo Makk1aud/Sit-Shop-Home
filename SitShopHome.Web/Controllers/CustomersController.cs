@@ -52,14 +52,18 @@ namespace SitShopHome.Web.Controllers
                 return View();
             if(!ModelState.IsValid)
                 return View(customerObj);
-
-            var customer = _customerJsonRequest.FindCustomer(customerObj.LoginEmail, customerObj.Password);
-
-            if(customer == null)
+            CustomerDTO customer;
+            try
             {
+                customer = _customerJsonRequest.FindCustomer(customerObj.LoginEmail, customerObj.Password);
+            }
+            catch (Exception e)
+            {
+                ViewBag.NotFound = e.Message.ToString();
                 return View(customerObj);
-            } 
-            GlobalData.Application["Customer"] = customer;
+            }
+            
+            GlobalData.Application["Customer"] = customer!;
             return RedirectToAction("MainPage");
         }
 

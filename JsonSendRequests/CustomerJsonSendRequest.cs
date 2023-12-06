@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Net;
 using AutoMapper;
+using Entities.Exceptions;
 namespace JsonSendRequests;
 
 public class CustomerJsonSendRequest : ICustomerJsonSendRequest
@@ -30,11 +31,19 @@ public class CustomerJsonSendRequest : ICustomerJsonSendRequest
         string url = _baseUrlAuth + $"/Login?email={login}&password={password}";
         var response = JsonService.HttpPostRequest(url);
         JsonNode jsonNode = JsonNode.Parse(response.ToString()!)!;
-
-        var customerId = jsonNode["customerId"].ToString();
-        var customerToken = jsonNode["access_token"].ToString();
-        var customer = GetCustomer(Guid.Parse(customerId), customerToken); 
-        return customer;
+        CustomerDTO? customer;
+        try
+        {
+            var customerId = jsonNode["customerId"].ToString();
+            var customerToken = jsonNode["access_token"].ToString();
+            customer = GetCustomer(Guid.Parse(customerId), customerToken); 
+        }
+        catch (Exception e)
+        {
+            var message = jsonNode["message"].ToString();
+            throw new NotFoundException(message);
+        } 
+       return customer;
     }
 
     public IEnumerable<CustomerDTO> GetAllObject()
