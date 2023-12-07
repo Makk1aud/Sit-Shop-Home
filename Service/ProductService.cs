@@ -26,7 +26,7 @@ namespace Service
         public ProductDTO CreateProduct(ProductForManipulationDTO productForManipulation)
         {
             var product = _mapper.Map<Product>(productForManipulation);
-            //Проверка на категорию
+            CheckProductCategoryIfItExist((Guid)productForManipulation.ProductCategoryId, trackChanges: false);
             _repositoryManager.Product.CreateProduct(product);
             _repositoryManager.Save();
 
@@ -60,7 +60,8 @@ namespace Service
         public ProductDTO UpdateProduct(Guid productId, ProductForManipulationDTO productForManipulation, bool trackChanges)
         {
             var product = CheckAndGetProductIfItExist(productId, trackChanges);
-            //var productCategory Проверка категории
+            CheckProductCategoryIfItExist((Guid)productForManipulation.ProductCategoryId, trackChanges : false);
+
             _mapper.Map(productForManipulation,product);
             _repositoryManager.Save();
 
@@ -75,6 +76,14 @@ namespace Service
                 throw new GenericNotFoundException<Product>(productId);
             
             return product;
+        }
+
+        private void CheckProductCategoryIfItExist(Guid categoryId, bool trackChanges)
+        {
+            var category = _repositoryManager.ProductCategory.GetProductCategory(categoryId,trackChanges: false);
+
+            if(category is null)
+                throw new GenericNotFoundException<Productcategory>(categoryId);
         }
     }
 }

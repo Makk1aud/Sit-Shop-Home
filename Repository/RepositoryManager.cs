@@ -1,4 +1,6 @@
 ﻿using Contracts;
+using Entities.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ namespace Repository
         private Lazy<ICustomerRepository> _customerRepository;
         private Lazy<IGenderRepository> _genderRepository;
         private Lazy<IProductRepository> _productRepository;
+        private Lazy<IProductCategoryRepository> _productCategoryRepository;
 
         public RepositoryManager(SitshophomeContext repositoryContext)
         {
@@ -20,6 +23,7 @@ namespace Repository
             _customerRepository = new Lazy<ICustomerRepository>(() => new CustomerRepository(_repositoryContext));
             _genderRepository = new Lazy<IGenderRepository>(() => new GenderRepository(_repositoryContext));
             _productRepository = new Lazy<IProductRepository>(() => new ProductRepository(_repositoryContext));
+            _productCategoryRepository = new Lazy<IProductCategoryRepository>(() => new ProductCategoryRepository(repositoryContext));
         }
 
         public ICustomerRepository Customer => _customerRepository.Value;
@@ -28,7 +32,18 @@ namespace Repository
 
         public IProductRepository Product => _productRepository.Value;
 
-        //Сделать обработчик ошибок при сохранении в БД
-        public void Save() => _repositoryContext.SaveChanges();
+        public IProductCategoryRepository ProductCategory => _productCategoryRepository.Value;
+
+        public void Save()
+        {
+            try
+            {
+                _repositoryContext.SaveChanges();
+            }
+            catch(DbUpdateException ex)
+            {
+                throw new DataBaseBadRequestException(ex.Message);
+            }
+        }
     }
 }

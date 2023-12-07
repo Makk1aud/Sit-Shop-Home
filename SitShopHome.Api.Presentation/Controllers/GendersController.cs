@@ -36,6 +36,7 @@ namespace SitShopHome.Api.Presentation.Controllers
             return Ok(genderToReturn);
         }
 
+        [Authorize]
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public IActionResult CreateGender([FromBody] GenderForManipulationDTO genderForManipulation)
