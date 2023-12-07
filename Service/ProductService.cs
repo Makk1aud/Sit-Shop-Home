@@ -4,6 +4,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,13 +49,13 @@ namespace Service
             return productToReturn;
         }
 
-        public IEnumerable<ProductDTO> GetProducts(bool trackChanges)
+        public (IEnumerable<ProductDTO> products, MetaData metaData) GetProducts(ProductsParameters productsParameters, bool trackChanges)
         {
-            var products = _repositoryManager
-                .Product
-                .GetProducts(trackChanges);
-            var productsToReturn = _mapper.Map<IEnumerable<ProductDTO>>(products);
-            return productsToReturn;
+            var productsWithMetaData = _repositoryManager.Product.GetProducts(productsParameters, trackChanges);
+
+            var productsToReturn = _mapper.Map<IEnumerable<ProductDTO>>(productsWithMetaData);
+
+            return (products: productsToReturn, metaData: productsWithMetaData.MetaData);
         }
 
         public ProductDTO UpdateProduct(Guid productId, ProductForManipulationDTO productForManipulation, bool trackChanges)

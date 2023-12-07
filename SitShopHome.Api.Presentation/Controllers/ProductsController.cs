@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 using SitShopHome.Api.Presentation.ActionFilters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SitShopHome.Api.Presentation.Controllers
@@ -30,10 +32,12 @@ namespace SitShopHome.Api.Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetProducts()
+        public IActionResult GetProducts([FromQuery] ProductsParameters productsParameters)
         {
-            var products = _serviceManager.Product.GetProducts(trackChanges: false);
-            return Ok(products);
+            var products = _serviceManager.Product.GetProducts(productsParameters, trackChanges: false);
+
+            Response.Headers.Add("Info-Pagination", JsonSerializer.Serialize(products.metaData));
+            return Ok(products.products);
         }
 
         [Authorize]

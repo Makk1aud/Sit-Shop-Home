@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities.Models;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,16 @@ namespace Repository
             FindByContidion(x => x.ProductId.Equals(productId), trackChanges)
             .SingleOrDefault();
 
-        public IEnumerable<Product> GetProducts(bool trackChanges) => 
-            FindAll(trackChanges)
-            .ToList();
+        public PagedList<Product> GetProducts(ProductsParameters productsParameters, bool trackChanges)
+        {
+            var products = FindAll(trackChanges)
+                .Skip((productsParameters.PageNumber - 1) * productsParameters.PageSize)
+                .Take(productsParameters.PageSize)
+                .ToList();
+            var count = FindAll(trackChanges)
+                .Count();
+
+            return new PagedList<Product>(products, count, productsParameters.PageNumber, productsParameters.PageSize);
+        }
     }
 }
