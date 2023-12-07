@@ -35,7 +35,7 @@ namespace SitShopHome.Web.Controllers
             
             
             var result = _customerJsonRequest.CreateCustomer(customerObj, birthday);
-            if(result != System.Net.HttpStatusCode.OK)
+            if(result != System.Net.HttpStatusCode.Created)
             {
                 ViewBag.NotOk = "Something went wrong";
                 return View(customerObj);
@@ -55,7 +55,8 @@ namespace SitShopHome.Web.Controllers
             CustomerDTO customer;
             try
             {
-                customer = _customerJsonRequest.FindCustomer(customerObj.LoginEmail, customerObj.Password);
+                customer = _customerJsonRequest.FindCustomer(customerObj.LoginEmail, customerObj.Password, out string token);
+                GlobalData.Application["Token"] = token ?? "No token";
             }
             catch (Exception e)
             {

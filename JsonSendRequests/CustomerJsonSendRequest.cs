@@ -21,12 +21,12 @@ public class CustomerJsonSendRequest : ICustomerJsonSendRequest
         return status;
     }
 
-    public void DeleteObject(Guid id)
+    public void DeleteObject(Guid id, string token = null)
     {
         throw new NotImplementedException();
     }
 
-    public CustomerDTO? FindCustomer(string login, string password)
+    public CustomerDTO? FindCustomer(string login, string password, out string? token)
     {
         string url = _baseUrlAuth + $"/Login?email={login}&password={password}";
         var response = JsonService.HttpPostRequest(url);
@@ -36,6 +36,7 @@ public class CustomerJsonSendRequest : ICustomerJsonSendRequest
         {
             var customerId = jsonNode["customerId"].ToString();
             var customerToken = jsonNode["access_token"].ToString();
+            token = customerToken.ToString();
             customer = GetCustomer(Guid.Parse(customerId), customerToken); 
         }
         catch (Exception e)
@@ -46,7 +47,7 @@ public class CustomerJsonSendRequest : ICustomerJsonSendRequest
        return customer;
     }
 
-    public IEnumerable<CustomerDTO> GetAllObject()
+    public IEnumerable<CustomerDTO> GetAllObject(string? token = null)
     {
         throw new NotImplementedException();
     }
@@ -59,7 +60,7 @@ public class CustomerJsonSendRequest : ICustomerJsonSendRequest
         return customerDto;
     }
 
-    public CustomerDTO? GetObject(Guid id)
+    public CustomerDTO? GetObject(Guid id, string? token = null)
     {
         throw new NotImplementedException();
     }

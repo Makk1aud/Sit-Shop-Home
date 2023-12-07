@@ -8,6 +8,6 @@ public interface ICustomerJsonSendRequest : IJsonSendRequest<CustomerDTO>
 {
     HttpStatusCode CreateCustomer(CustomerForManipulationDTO customerDto, DateOnly birth);
     void UpdateCustomer(Guid id, CustomerForManipulationDTO customerDto, DateOnly birth);
-    CustomerDTO? FindCustomer(string login, string password);
+    CustomerDTO? FindCustomer(string login, string password, out string? token);
     CustomerDTO? GetCustomer(Guid id, string token);
 }

@@ -9,8 +9,9 @@ namespace Service;
 public static class JsonService
 {
     private static HttpClient _client = new HttpClient();
-    public static HttpStatusCode HttpPostRequest(string url, string body)
+    public static HttpStatusCode HttpPostRequest(string url, string body, string? token = null)
     {
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         StringContent content = new StringContent(body, Encoding.UTF8, "application/json");
         var response =  _client.PostAsync(url, content).Result;
         return response.StatusCode;
@@ -23,9 +24,9 @@ public static class JsonService
         return result;
     }
 
-    public static object HttpGetRequest(string url, string header = null, string body = null)
+    public static object HttpGetRequest(string url, string? token = null) 
     {
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         var response = _client.GetAsync(url).Result;
         var result = response.Content.ReadAsStringAsync().Result;
         return result;

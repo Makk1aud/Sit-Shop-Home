@@ -7,8 +7,8 @@ namespace Contracts
 {
     public interface IJsonSendRequest<T>
     {
-        T? GetObject(Guid id);
-        IEnumerable<T>? GetAllObject();
-        void DeleteObject(Guid id);
+        T? GetObject(Guid id, string? token = null);
+        IEnumerable<T>? GetAllObject(string? token = null);
+        void DeleteObject(Guid id, string? token = null);
     }
 }
