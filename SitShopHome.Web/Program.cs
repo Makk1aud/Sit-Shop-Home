@@ -1,11 +1,15 @@
 using JsonSendRequests.Contracts;
 using JsonSendRequests;
+using SitShopHome.Web.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 {
     // Add services to the container.
     builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
     builder.Services.AddScoped<ICustomerJsonSendRequest, CustomerJsonSendRequest>();
+    
+    builder.Services.AddTransient<CheckAuthMiddleware>();
+    
 }
 
 var app = builder.Build();
@@ -20,10 +24,10 @@ var app = builder.Build();
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
-
     app.UseRouting();
-
     app.UseAuthorization();
+
+    app.UseCheckAuthMiddleware();
 
     app.MapControllerRoute(
         name: "default",

@@ -64,15 +64,11 @@ namespace SitShopHome.Web.Controllers
             }
             
             GlobalData.Application["Customer"] = customer!;
-            return RedirectToAction("MainPage");
+            return RedirectToAction("MainPage", "Products");
         }
 
-
-        public IActionResult MainPage()
-        {
-            ViewData["FullName"] = (GlobalData.Application["Customer"] as CustomerDTO).CustomerFullName;
-            return View();
-        }  
+        
+       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
