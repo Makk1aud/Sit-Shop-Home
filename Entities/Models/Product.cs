@@ -17,6 +17,8 @@ public partial class Product
 
     public bool? ProductDisplay { get; set; }
 
+    public int ProductPrice { get; set; }
+
     public virtual Productcategory ProductCategory { get; set; } = null!;
 
     public virtual ICollection<Purchase> Purchases { get; set; } = new List<Purchase>();
