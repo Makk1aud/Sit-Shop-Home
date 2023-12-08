@@ -1,9 +1,7 @@
-﻿using Entities.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Entities.Models;
-
 public partial class Gender
 {
     public Guid GenderId { get; set; }
