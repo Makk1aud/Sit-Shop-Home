@@ -4,6 +4,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Service
         public ProductDTO CreateProduct(ProductForManipulationDTO productForManipulation)
         {
             var product = _mapper.Map<Product>(productForManipulation);
-            //Проверка на категорию
+            CheckProductCategoryIfItExist((Guid)productForManipulation.ProductCategoryId, trackChanges: false);
             _repositoryManager.Product.CreateProduct(product);
             _repositoryManager.Save();
 
@@ -48,19 +49,20 @@ namespace Service
             return productToReturn;
         }
 
-        public IEnumerable<ProductDTO> GetProducts(bool trackChanges)
+        public (IEnumerable<ProductDTO> products, MetaData metaData) GetProducts(ProductsParameters productsParameters, bool trackChanges)
         {
-            var products = _repositoryManager
-                .Product
-                .GetProducts(trackChanges);
-            var productsToReturn = _mapper.Map<IEnumerable<ProductDTO>>(products);
-            return productsToReturn;
+            var productsWithMetaData = _repositoryManager.Product.GetProducts(productsParameters, trackChanges);
+
+            var productsToReturn = _mapper.Map<IEnumerable<ProductDTO>>(productsWithMetaData);
+
+            return (products: productsToReturn, metaData: productsWithMetaData.MetaData);
         }
 
         public ProductDTO UpdateProduct(Guid productId, ProductForManipulationDTO productForManipulation, bool trackChanges)
         {
             var product = CheckAndGetProductIfItExist(productId, trackChanges);
-            //var productCategory Проверка категории
+            CheckProductCategoryIfItExist((Guid)productForManipulation.ProductCategoryId, trackChanges : false);
+
             _mapper.Map(productForManipulation,product);
             _repositoryManager.Save();
 
@@ -75,6 +77,14 @@ namespace Service
                 throw new GenericNotFoundException<Product>(productId);
             
             return product;
+        }
+
+        private void CheckProductCategoryIfItExist(Guid categoryId, bool trackChanges)
+        {
+            var category = _repositoryManager.ProductCategory.GetProductCategory(categoryId,trackChanges: false);
+
+            if(category is null)
+                throw new GenericNotFoundException<Productcategory>(categoryId);
         }
     }
 }

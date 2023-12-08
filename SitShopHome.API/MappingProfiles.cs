@@ -19,6 +19,11 @@ namespace SitShopHome.API
 
             CreateMap<Product, ProductDTO>();
             CreateMap<ProductForManipulationDTO, Product>().ReverseMap();
+
+            CreateMap<Productcategory, ReferenceDTO>()
+                .ForMember("title", opts => opts.MapFrom(x => x.CategoryTitle))
+                .ForMember("id", opts => opts.MapFrom(x => x.ProductCategoryId));
+            CreateMap<ProductCategoryForManipulationDTO, Productcategory>().ReverseMap();
         }
     }
 }

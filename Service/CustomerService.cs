@@ -78,7 +78,7 @@ namespace Service
         {
             var customer = _repositoryManager.Customer.GetCustomerByEmailAndPassword(email, password, trackChanges);
             if(customer is null)
-                throw new NotFoundException($"Customer with email:{email} and password:{password} not found");
+                throw new GenericNotFoundException<Customer>($"Customer with email:{email} and password:{password} not found");
 
             var customerToReturn = _mapper.Map<CustomerDTO>(customer);
 
