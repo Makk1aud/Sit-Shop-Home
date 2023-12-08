@@ -1,8 +1,10 @@
 ﻿using Contracts;
 using Entities.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +44,14 @@ namespace Repository
             }
             catch(DbUpdateException ex)
             {
-                throw new DataBaseBadRequestException(ex.Message);
+                if(ex.GetBaseException() is PostgresException pgException)
+                    switch(pgException.Code)
+                    {
+                        case "23505":
+                            throw new DataBaseBadRequestException("Такой email уже существует");
+                        default:
+                            throw new DataBaseBadRequestException($"Ошибка при сохранении данных");
+                    }
             }
         }
     }
