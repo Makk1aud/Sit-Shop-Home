@@ -14,7 +14,8 @@ namespace SitShopHome.API.Extensions
                 options.AddPolicy("Corspolicy", builder =>
                 builder.AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader());
+                .AllowAnyHeader()
+                .WithExposedHeaders("Info-Pagination"));
             });
         public static void ConfigureLoggerService(this IServiceCollection services) =>
             services.AddSingleton<ILoggerManager, LoggerManager>();

@@ -12,5 +12,15 @@ namespace Entities.Exceptions
             : base($"object {typeof(T).Name} with id: {id} not found")
         {
         }
+
+        public GenericNotFoundException(string message)
+            : base(message)
+        {
+        }
+
+        public GenericNotFoundException()
+            : base($"object {typeof(T).Name} not found")
+        {
+        }
     }
 }

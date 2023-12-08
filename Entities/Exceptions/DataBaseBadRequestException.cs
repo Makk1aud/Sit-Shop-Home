@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Entities.Exceptions
 {
-    public abstract class NotFoundException : Exception
+    public class DataBaseBadRequestException : BadRequestException
     {
-        public NotFoundException(string message)
+        public DataBaseBadRequestException(string message)
             : base(message)
         {
-
         }
     }
 }
