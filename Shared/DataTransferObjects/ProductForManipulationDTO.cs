@@ -26,5 +26,8 @@ namespace Shared.DataTransferObjects
 
         [Required(ErrorMessage = "ProductDisplay field is required")]
         public bool? ProductDisplay { get; init; }
+
+        [Range(0, int.MaxValue,ErrorMessage ="Price Cant be negative number")]
+        public int ProductPrice { get; init; }
     }
 }

@@ -19,5 +19,7 @@ namespace Shared.DataTransferObjects
         public string? ProductImage { get; init; }
 
         public bool? ProductDisplay { get; init; }
+
+        public int ProductPrice { get; init; }
     }
 }

@@ -103,6 +103,7 @@ public partial class SitshophomeContext : DbContext
             entity.Property(e => e.ProductImage)
                 .HasMaxLength(100)
                 .HasColumnName("product_image");
+            entity.Property(e => e.ProductPrice).HasColumnName("product_price");
             entity.Property(e => e.ProductTitle)
                 .HasMaxLength(100)
                 .HasColumnName("product_title");
