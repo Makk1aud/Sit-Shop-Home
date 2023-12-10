@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Service.Contracts;
+using Service.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,12 @@ namespace Service
         private readonly Lazy<IProductCategoryService> _productCategoryService;
         public ServiceManager(IMapper mapper, IRepositoryManager repositoryManager)
         {
-            _customerService = new Lazy<ICustomerService>(() => new CustomerService(repositoryManager, mapper));
-            _genderService = new Lazy<IGenderService>(() => new GenderService(repositoryManager, mapper));
-            _productService = new Lazy<IProductService>(() => new ProductService(repositoryManager, mapper));
-            _productCategoryService = new Lazy<IProductCategoryService>(() => new ProductCategoryService(repositoryManager, mapper));
+            var entityChecker = new EntityChecker(repositoryManager);
+
+            _customerService = new Lazy<ICustomerService>(() => new CustomerService(repositoryManager, mapper, entityChecker));
+            _genderService = new Lazy<IGenderService>(() => new GenderService(repositoryManager, mapper, entityChecker));
+            _productService = new Lazy<IProductService>(() => new ProductService(repositoryManager, mapper, entityChecker));
+            _productCategoryService = new Lazy<IProductCategoryService>(() => new ProductCategoryService(repositoryManager, mapper, entityChecker));
         }
         public ICustomerService Customer => _customerService.Value;
 

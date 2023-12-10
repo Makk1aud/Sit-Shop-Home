@@ -3,6 +3,7 @@ using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
+using Service.Utility;
 using Shared.DataTransferObjects;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,13 @@ namespace Service
     {
         private readonly IRepositoryManager _repositoryManger;
         private readonly IMapper _mapper;
+        private readonly EntityChecker _entityChecker;
 
-        public GenderService(IRepositoryManager repositoryManger, IMapper mapper)
+        public GenderService(IRepositoryManager repositoryManger, IMapper mapper, EntityChecker entityChecker)
         {
             _repositoryManger = repositoryManger;
             _mapper = mapper;
+            _entityChecker = entityChecker;
         }
 
         public ReferenceDTO CreateGender(GenderForManipulationDTO genderForManipulation)
@@ -35,14 +38,14 @@ namespace Service
 
         public void DeleteGender(Guid genderId, bool trackChanges)
         {
-            var gender = GetGenderIfItExist(genderId, trackChanges);
+            var gender = _entityChecker.GetGenderAndCheckIfItExist(genderId, trackChanges);
             _repositoryManger.Gender.DeleteGender(gender);
             _repositoryManger.Save();
         }
 
         public ReferenceDTO GetGender(Guid genderId, bool trackChanges)
         {
-            var gender = GetGenderIfItExist(genderId, trackChanges);
+            var gender = _entityChecker.GetGenderAndCheckIfItExist(genderId, trackChanges);
             var genderToReturn = _mapper.Map<ReferenceDTO>(gender);
             return genderToReturn;
         }
@@ -56,21 +59,12 @@ namespace Service
 
         public ReferenceDTO UpdateGender(Guid genderId, GenderForManipulationDTO genderForManipulation, bool trackChanges)
         {
-            var gender = GetGenderIfItExist(genderId, trackChanges);
+            var gender = _entityChecker.GetGenderAndCheckIfItExist(genderId, trackChanges);
             _mapper.Map(genderForManipulation, gender);
             _repositoryManger.Save();
 
             var genderToReturn = _mapper.Map<ReferenceDTO>(gender);
             return genderToReturn;
-        }
-
-        private Gender GetGenderIfItExist(Guid genderId, bool trackChanges)
-        {
-            var gender = _repositoryManger.Gender.GetGender(genderId, trackChanges);
-            if (gender is null)
-                throw new GenericNotFoundException<Gender>(genderId);
-
-            return gender;
         }
     }
 }

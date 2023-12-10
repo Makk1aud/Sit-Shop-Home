@@ -10,6 +10,7 @@ using SitShopHome.Api.Presentation.ActionFilters;
 using SitShopHome.API.Presentation;
 using SitShopHome.API.Extensions;
 using Swashbuckle.AspNetCore.Filters;
+using Service.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureLoggerService();
+
 builder.Services.AddAutoMapper(typeof(Program));
 
 
@@ -34,6 +36,7 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddScoped<SitshophomeContext>();
 builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.AddScoped<EntityChecker>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x =>

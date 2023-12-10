@@ -3,6 +3,7 @@ using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
+using Service.Utility;
 using Shared.DataTransferObjects;
 using System;
 using System.Collections.Generic;
@@ -16,18 +17,21 @@ namespace Service
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly EntityChecker _entityChecker; 
 
-        public CustomerService(IRepositoryManager repositoryManager, IMapper mapper)
+        public CustomerService(IRepositoryManager repositoryManager, IMapper mapper, EntityChecker entityChecker)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _entityChecker = entityChecker;
         }
 
         public CustomerDTO CreateCustomer(CustomerForManipulationDTO customerForManipulation, DateOnly birth)
         {
             var customer = _mapper.Map<Customer>(customerForManipulation);
-            CheckGenderIfItExist((Guid)customerForManipulation.GenderId, trackChanges:false);
-
+            //CheckGenderIfItExist((Guid)customerForManipulation.GenderId, trackChanges:false);
+            _entityChecker.GetGenderAndCheckIfItExist((Guid)customerForManipulation.GenderId, trackChanges: false);
+            
             customer.CustomerBirth = birth;
 
             _repositoryManager.Customer.CreateCustomer(customer);
@@ -39,15 +43,16 @@ namespace Service
 
         public void DeleteCustomer(Guid customerId, bool trackChanges)
         {
-            var customer = GetCustomerAndCheckIfItExist(customerId, trackChanges);
-
+            var customer = _entityChecker.GetCustomerAndCheckIfItExist(customerId, trackChanges);
+            //_entityChecker.GetCustomerAndCheckIfItExist(customerId, trackChanges, trackChanges);
             _repositoryManager.Customer.DeleteCustomer(customer);
             _repositoryManager.Save();
         }
 
         public CustomerDTO GetCustomer(Guid customerId, bool trackChanges)
         {
-            var customer = GetCustomerAndCheckIfItExist(customerId, trackChanges);
+            //var customer = GetCustomerAndCheckIfItExist(customerId, trackChanges);
+            var customer = _entityChecker.GetCustomerAndCheckIfItExist(customerId,trackChanges);
             var customerToReturn = _mapper.Map<CustomerDTO>(customer);
             return customerToReturn;
         }
@@ -62,8 +67,9 @@ namespace Service
 
         public CustomerDTO UpdateCustomer(Guid customerId, CustomerForManipulationDTO customerForManipulation, bool trackChanges, DateOnly? birth = null)
         {
-            var customer = GetCustomerAndCheckIfItExist(customerId, trackChanges);
-            CheckGenderIfItExist((Guid)customerForManipulation.GenderId, trackChanges);
+            var customer = _entityChecker.GetCustomerAndCheckIfItExist(customerId, trackChanges);
+            //CheckGenderIfItExist((Guid)customerForManipulation.GenderId, trackChanges);
+            _entityChecker.GetGenderAndCheckIfItExist((Guid)customerForManipulation.GenderId, trackChanges: false);
 
             _mapper.Map(customerForManipulation, customer);
 
@@ -83,21 +89,6 @@ namespace Service
             var customerToReturn = _mapper.Map<CustomerDTO>(customer);
 
             return customerToReturn;
-        }
-
-        private Customer GetCustomerAndCheckIfItExist(Guid customerId, bool trackChanges)
-        {
-            var customer = _repositoryManager.Customer.GetCustomer(customerId, trackChanges);
-            if (customer is null)
-                throw new GenericNotFoundException<Customer>(customerId);
-            return customer;
-        }
-
-        private void CheckGenderIfItExist(Guid genderId, bool trackChanges)
-        {
-            var gender = _repositoryManager.Gender.GetGender(genderId, trackChanges);
-            if(gender is null)
-                throw new GenericNotFoundException<Gender>(genderId);  
         }
     }
 }

@@ -3,6 +3,7 @@ using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
+using Service.Utility;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
 using System;
@@ -17,17 +18,19 @@ namespace Service
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly EntityChecker _entityChecker;
 
-        public ProductService(IRepositoryManager repositoryManager, IMapper mapper)
+        public ProductService(IRepositoryManager repositoryManager, IMapper mapper, EntityChecker entityChecker)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _entityChecker = entityChecker;
         }
 
         public ProductDTO CreateProduct(ProductForManipulationDTO productForManipulation)
         {
             var product = _mapper.Map<Product>(productForManipulation);
-            CheckProductCategoryIfItExist((Guid)productForManipulation.ProductCategoryId, trackChanges: false);
+            _entityChecker.GetProductCategoryAndCheckIfItExist((Guid)productForManipulation.ProductCategoryId, trackChanges: false);
             _repositoryManager.Product.CreateProduct(product);
             _repositoryManager.Save();
 
@@ -37,14 +40,14 @@ namespace Service
 
         public void DeleteProduct(Guid productId, bool trackChanges)
         {
-            var product = CheckAndGetProductIfItExist(productId, trackChanges);
+            var product = _entityChecker.GetProductAndCheckIfItExist(productId, trackChanges);
             _repositoryManager.Product.DeleteProduct(product);
             _repositoryManager.Save();
         }
 
         public ProductDTO GetProduct(Guid productId, bool trackChanges)
         {
-            var product = CheckAndGetProductIfItExist(productId, trackChanges);
+            var product = _entityChecker.GetProductAndCheckIfItExist(productId, trackChanges);
             var productToReturn = _mapper.Map<ProductDTO>(product);
             return productToReturn;
         }
@@ -60,31 +63,14 @@ namespace Service
 
         public ProductDTO UpdateProduct(Guid productId, ProductForManipulationDTO productForManipulation, bool trackChanges)
         {
-            var product = CheckAndGetProductIfItExist(productId, trackChanges);
-            CheckProductCategoryIfItExist((Guid)productForManipulation.ProductCategoryId, trackChanges : false);
+            var product = _entityChecker.GetProductAndCheckIfItExist(productId, trackChanges);
+            _entityChecker.GetProductCategoryAndCheckIfItExist((Guid)productForManipulation.ProductCategoryId, trackChanges : false);
 
             _mapper.Map(productForManipulation,product);
             _repositoryManager.Save();
 
             var productToReturn = _mapper.Map<ProductDTO>(product);
             return productToReturn;
-        }
-
-        private Product CheckAndGetProductIfItExist(Guid productId, bool trackChanges)
-        {
-            var product = _repositoryManager.Product.GetProduct(productId, trackChanges);
-            if (product is null)
-                throw new GenericNotFoundException<Product>(productId);
-            
-            return product;
-        }
-
-        private void CheckProductCategoryIfItExist(Guid categoryId, bool trackChanges)
-        {
-            var category = _repositoryManager.ProductCategory.GetProductCategory(categoryId,trackChanges: false);
-
-            if(category is null)
-                throw new GenericNotFoundException<Productcategory>(categoryId);
         }
     }
 }
