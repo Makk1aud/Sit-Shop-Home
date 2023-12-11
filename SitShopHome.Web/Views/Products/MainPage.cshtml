@@ -1,5 +1,20 @@
+@model IEnumerable<MainPageProductViewModel>
 @{
     ViewData["Title"] = "Main page products";
 }
 
 <h1>@ViewData["Title"]</h1>
+
+@foreach(var item in Model)
+{
+    <div class="card" style="width: 18rem;">
+        <img src="~/@item.ProductImage" class="card-img-top">
+        <div class="card-body">
+            <h5 class="card-title">@item.ProductTitle</h5>
+            <p class="card-text">Cost: @item.ProductPrice rub</p>
+            <a href="#" class="btn btn-primary">See more</a>
+            <a class="btn btn-primary">BUY</a>
+        </div>
+    </div>
+    <p></p>
+}

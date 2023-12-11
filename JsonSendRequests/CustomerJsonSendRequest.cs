@@ -42,7 +42,7 @@ public class CustomerJsonSendRequest : ICustomerJsonSendRequest
         catch (Exception e)
         {
             var message = jsonNode["message"].ToString();
-            throw new NotFoundException(message);
+            throw  new GenericNotFoundException<object>(message);
         } 
        return customer;
     }
