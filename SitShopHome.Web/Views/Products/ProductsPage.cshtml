@@ -1,0 +1,36 @@
+@model Shared.DataTransferObjects.ProductDTO
+
+@{
+    ViewData["Title"] = $"This is {@Model.ProductTitle}";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="ProductCard">
+    <div class="ProductPhoto">
+        <img src="~/@Model.ProductImage" class="ProductPhotoInPage"> 
+    </div>
+    <div class="ProductInfo">
+        <p>Название: @Model.ProductTitle</p>
+        <p>@Model.ProductDescription</p>
+        <p>Cost: @Model.ProductPrice rub</p>
+    </div>
+</div>
+
+<style>
+    .ProductCard{
+        display:flex;
+        justify-content: space-between;
+    }
+    .ProductPhoto{
+        float:left;
+    }
+
+    .ProductInfo{
+        float:right;
+    }
+    .ProductPhotoInPage{
+        max-width: 50%;
+        max-height: 50%;
+    }
+</style>

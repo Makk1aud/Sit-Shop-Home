@@ -26,7 +26,10 @@ public class ProductsJsonSendRequest : IProductsJsonSendRequest
 
     public ProductDTO? GetObject(Guid id, string? token = null)
     {
-        throw new NotImplementedException();
+        string url = _baseUrl + "/" + id.ToString();
+        var response = JsonService.HttpGetRequest(url, token);
+        var product = JsonSerializer.Deserialize<ProductDTO>(response.ToString());
+        return product;
     }
 
     public IEnumerable<ProductDTO>? GetProductsOnPage(int pageNumber, int pageSize)

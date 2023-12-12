@@ -68,6 +68,12 @@ namespace SitShopHome.Web.Controllers
             return RedirectToAction("MainPage", "Products");
         }
 
+        public IActionResult Profile()
+        {
+            
+            return View();
+        }
+
         
        
 

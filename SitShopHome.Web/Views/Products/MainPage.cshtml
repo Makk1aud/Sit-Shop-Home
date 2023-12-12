@@ -12,7 +12,10 @@
         <div class="card-body">
             <h5 class="card-title">@item.ProductTitle</h5>
             <p class="card-text">Cost: @item.ProductPrice rub</p>
-            <a href="#" class="btn btn-primary">See more</a>
+            <form method="post" asp-action="ProductsPage">
+                <input name="id" type="text" value="@item.ProductId" hidden/>
+                <button class="btn btn-primary" type="submit">See more</button>
+            </form>
             <a class="btn btn-primary">BUY</a>
         </div>
     </div>
