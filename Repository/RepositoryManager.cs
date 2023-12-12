@@ -18,6 +18,7 @@ namespace Repository
         private Lazy<IGenderRepository> _genderRepository;
         private Lazy<IProductRepository> _productRepository;
         private Lazy<IProductCategoryRepository> _productCategoryRepository;
+        private Lazy<IPurchaseRepository> _purchaseRepository;
 
         public RepositoryManager(SitshophomeContext repositoryContext)
         {
@@ -26,6 +27,7 @@ namespace Repository
             _genderRepository = new Lazy<IGenderRepository>(() => new GenderRepository(_repositoryContext));
             _productRepository = new Lazy<IProductRepository>(() => new ProductRepository(_repositoryContext));
             _productCategoryRepository = new Lazy<IProductCategoryRepository>(() => new ProductCategoryRepository(repositoryContext));
+            _purchaseRepository = new Lazy<IPurchaseRepository>(() => new PurchaseRepository(_repositoryContext));
         }
 
         public ICustomerRepository Customer => _customerRepository.Value;
@@ -35,6 +37,8 @@ namespace Repository
         public IProductRepository Product => _productRepository.Value;
 
         public IProductCategoryRepository ProductCategory => _productCategoryRepository.Value;
+
+        public IPurchaseRepository Purchase => _purchaseRepository.Value;
 
         public void Save()
         {
@@ -52,6 +56,8 @@ namespace Repository
                         default:
                             throw new DataBaseBadRequestException($"Ошибка при сохранении данных");
                     }
+                else
+                    throw new DataBaseBadRequestException($"Ошибка при сохранении данных");
             }
         }
     }

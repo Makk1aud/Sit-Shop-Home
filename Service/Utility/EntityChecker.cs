@@ -41,6 +41,13 @@ namespace Service.Utility
             return GetEntityOrGenerateNotFoundException<Productcategory>(category, categoryId);
         }
 
+        public Purchase GetPurchaseAndCheckIfItExist(Guid customerId,Guid purchaseId, bool trackChanges)
+        {
+            GetCustomerAndCheckIfItExist(customerId, trackChanges);
+            var purchase = _repositoryManager.Purchase.GetCustomerPurchase(customerId, purchaseId, trackChanges);
+            return GetEntityOrGenerateNotFoundException<Purchase>(purchase, purchaseId);
+        }
+
         //This method check entity and if entity is not null it return
         private T GetEntityOrGenerateNotFoundException<T>(T entity, Guid id)
         {

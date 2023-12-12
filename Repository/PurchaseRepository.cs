@@ -17,22 +17,19 @@ namespace Repository
 
         public void CreateCustomerPurchase(Guid customerId, Purchase purchase)
         {
-            return;
+            purchase.CustomerId = customerId;
+            Create(purchase);
         }
 
-        public void DeleteCustomerPurchase(Purchase purchase)
-        {
-            throw new NotImplementedException();
-        }
+        public void DeleteCustomerPurchase(Purchase purchase) => Delete(purchase);
 
-        public Purchase GetCustomerPurchase(Guid customerId, Guid purchaseId, bool purchaseTrackChanges)
-        {
-            throw new NotImplementedException();
-        }
+        public Purchase GetCustomerPurchase(Guid customerId, Guid purchaseId, bool purchaseTrackChanges) =>
+            FindByContidion(x => x.PurchaseId.Equals(purchaseId) && 
+            x.CustomerId.Equals(customerId), purchaseTrackChanges)
+            .SingleOrDefault();
 
-        public IEnumerable<Purchase> GetCustomerPurchases(Guid customerId, bool trackChanges)
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Purchase> GetCustomerPurchases(Guid customerId, bool trackChanges) =>
+            FindByContidion(x => x.CustomerId.Equals(customerId), trackChanges)
+            .ToList();
     }
 }
