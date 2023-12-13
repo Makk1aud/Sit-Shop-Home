@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
     builder.Services.AddScoped<ICustomerJsonSendRequest, CustomerJsonSendRequest>();
     builder.Services.AddScoped<IProductsJsonSendRequest, ProductsJsonSendRequest>();
+    builder.Services.AddScoped<IProductCategoryJsonSendRequest, ProductCategoryJsonSendRequest>();
     
     builder.Services.AddTransient<CheckAuthMiddleware>();
     

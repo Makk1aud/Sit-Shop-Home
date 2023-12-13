@@ -1,4 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
+using AutoMapper.Configuration.Annotations;
 using JsonSendRequests.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DataTransferObjects;
@@ -70,8 +71,8 @@ namespace SitShopHome.Web.Controllers
 
         public IActionResult Profile()
         {
-            
-            return View();
+            var customer = GlobalData.Application["Customer"] as CustomerDTO;
+            return View(customer);
         }
 
         

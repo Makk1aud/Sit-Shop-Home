@@ -1,0 +1,22 @@
+@using Shared.DataTransferObjects;
+@model ProductViewModel
+@{
+    ViewData["Title"] = "Create a product";
+    var productCategories = ViewData["ProductCategories"] as IEnumerable<ProductCategoryDTO>;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<form method="post" enctype="multipart/form-data">
+
+    <select asp-for="Id">
+    @foreach(var item in productCategories)
+    {
+        <option value="@item.ProductCategoryId">@item.ProductCategoriesTitle</option>
+    }
+    </select>
+
+    <input type="file" asp-for="file"multiple accept="image/*"/>
+    <button type="submit" class="btn btn-primary">Save</button> 
+</form>

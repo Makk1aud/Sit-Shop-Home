@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using JsonSendRequests.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using SitShopHome.Web.Models;
 using SitShopHome.Web.Service;
 using SitShopHome.Web.Services;
 
@@ -17,11 +12,13 @@ namespace SitShopHome.Web.Controllers
         private const int _PAGESIZE = 10;
         private readonly ILogger<ProductsController> _logger;
         private readonly IProductsJsonSendRequest _request;
+        private readonly IProductCategoryJsonSendRequest _productCategoryRequest;
 
-        public ProductsController(ILogger<ProductsController> logger, IProductsJsonSendRequest request)
+        public ProductsController(ILogger<ProductsController> logger, IProductsJsonSendRequest request, IProductCategoryJsonSendRequest preqeust)
         {
             _logger = logger;
             _request = request;
+            _productCategoryRequest = preqeust;
         }
 
        public IActionResult MainPage()
@@ -35,7 +32,21 @@ namespace SitShopHome.Web.Controllers
        {
             string token = GlobalData.Application["Token"].ToString()!;
             var productDTO = _request.GetObject(Guid.Parse(id), token);
+            //Adding ProductViewModel for this page;
             return View(productDTO);
+       }
+
+       public IActionResult CreateProduct()
+       {
+            
+            ViewData["ProductCategories"] = _productCategoryRequest.GetAllObject();
+            return View();
+       }
+
+       [HttpPost]
+       public IActionResult CreateProduct(ProductViewModel model)
+       {
+            return RedirectToAction("MainPage");
        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
