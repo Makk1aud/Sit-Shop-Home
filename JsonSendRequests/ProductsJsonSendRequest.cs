@@ -9,9 +9,12 @@ namespace JsonSendRequests;
 public class ProductsJsonSendRequest : IProductsJsonSendRequest
 {
     private const string _baseUrl = "http://localhost:5194/api/products";
-    public HttpStatusCode CreateProduct(ProductDTO productDTO, string token)
+    public HttpStatusCode CreateProduct(ProductForManipulationDTO productDTO, string token)
     {
-        return HttpStatusCode.Created;
+        string url = _baseUrl;
+        string body = JsonSerializer.Serialize(productDTO);
+        var status = JsonService.HttpPostRequest(url,body,token);
+        return status;
     }
 
     public void DeleteObject(Guid id, string? token = null)

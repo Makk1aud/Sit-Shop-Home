@@ -7,6 +7,6 @@ namespace JsonSendRequests.Contracts;
 
 public interface IProductsJsonSendRequest : IJsonSendRequest<ProductDTO>
 {
-    HttpStatusCode CreateProduct(ProductDTO productDTO, string token);
+    HttpStatusCode CreateProduct(ProductForManipulationDTO productDTO, string token);
     IEnumerable<ProductDTO>? GetProductsOnPage(int pageNumber, int pageSize);
 }

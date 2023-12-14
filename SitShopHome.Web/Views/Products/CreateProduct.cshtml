@@ -9,14 +9,40 @@
 
 
 <form method="post" enctype="multipart/form-data">
-
-    <select asp-for="Id">
-    @foreach(var item in productCategories)
-    {
-        <option value="@item.ProductCategoryId">@item.ProductCategoriesTitle</option>
-    }
-    </select>
-
-    <input type="file" asp-for="file"multiple accept="image/*"/>
+<div class="CreateProductPanel">
+    <div class="ProductBlock">
+        <label >Title</label>
+        <input type = "text" asp-for="Title" />
+        <span asp-validation-for="Title"></span>
+    </div>
+     <div class="ProductBlock">
+        <label >Desctiption</label>
+        <input type = "text" asp-for="Description" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div class="ProductBlock">
+        <label >Category: </label>
+        <select asp-for="CategoryId">
+        @foreach(var item in productCategories)
+        {
+            <option value="@item.ProductCategoryId">@item.ProductCategoriesTitle</option>
+        }
+        </select>
+        <span asp-validation-for="CategoryId"></span>
+    </div>
+    <div class="ProductBlock">
+        <lable>Picture: </lable>
+        <input type="file" asp-for="File"multiple accept="image/*"/>
+        <span asp-validation-for="File"></span>
+    </div> 
+    <div class="ProductBlock">
+        <label >Price: </label>
+        <input type="number"  asp-for="Price" />
+        <span asp-validation-for="Price"></span>
+    </div>
+ 
+    <span>@ViewBag.SomethingWrong</span>
     <button type="submit" class="btn btn-primary">Save</button> 
+<
+</div>
 </form>

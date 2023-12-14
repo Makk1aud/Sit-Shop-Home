@@ -22,4 +22,19 @@ public static class ConvertService
 
         return productList;
     }
+
+    public static ProductForManipulationDTO ConvertProductViewModelToDTO(ProductViewModel model, string imagePath)
+    {
+        var product = new ProductForManipulationDTO()
+        {
+            ProductTitle = model.Title,
+            ProductCategoryId = model.CategoryId,
+            ProductDescription = model.Description,
+            ProductDisplay = true,
+            ProductImage = imagePath,
+            ProductPrice = model.Price 
+        };
+
+        return product;
+    }
 }

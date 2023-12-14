@@ -13,12 +13,17 @@ namespace SitShopHome.Web.Controllers
         private readonly ILogger<ProductsController> _logger;
         private readonly IProductsJsonSendRequest _request;
         private readonly IProductCategoryJsonSendRequest _productCategoryRequest;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public ProductsController(ILogger<ProductsController> logger, IProductsJsonSendRequest request, IProductCategoryJsonSendRequest preqeust)
+        public ProductsController(ILogger<ProductsController> logger, 
+        IProductsJsonSendRequest request,
+        IProductCategoryJsonSendRequest preqeust,
+        IWebHostEnvironment host)
         {
             _logger = logger;
             _request = request;
             _productCategoryRequest = preqeust;
+            _hostingEnvironment = host;
         }
 
        public IActionResult MainPage()
@@ -38,7 +43,6 @@ namespace SitShopHome.Web.Controllers
 
        public IActionResult CreateProduct()
        {
-            
             ViewData["ProductCategories"] = _productCategoryRequest.GetAllObject();
             return View();
        }
@@ -46,6 +50,23 @@ namespace SitShopHome.Web.Controllers
        [HttpPost]
        public IActionResult CreateProduct(ProductViewModel model)
        {
+            ViewData["ProductCategories"] = _productCategoryRequest.GetAllObject();
+            if(!ModelState.IsValid)
+                return View(model);
+            
+            string filePathForDb = "Source\\Images\\"+ Guid.NewGuid().ToString() + model.File.FileName;
+            string filePath = Path.Combine(_hostingEnvironment.WebRootPath,filePathForDb );
+            using(Stream fileStream = new FileStream(filePath,FileMode.Create))
+                model.File.CopyTo(fileStream);
+            System.Console.WriteLine(filePathForDb.Length);
+            var product = ConvertService.ConvertProductViewModelToDTO(model, filePathForDb);
+            string token = GlobalData.Application["Token"].ToString()!;
+            var status = _request.CreateProduct(product, token);
+            if(status != System.Net.HttpStatusCode.Created)
+            {
+                ViewBag.SomethingWrong = "Something went wrong";
+                return View(model);
+            }
             return RedirectToAction("MainPage");
        }
 
