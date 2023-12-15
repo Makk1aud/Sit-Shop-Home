@@ -3,6 +3,7 @@ using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
+using Service.Utility;
 using Shared.DataTransferObjects;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,13 @@ namespace Service
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly EntityChecker _entityChecker;
 
-        public ProductCategoryService(IRepositoryManager repositoryManager, IMapper mapper)
+        public ProductCategoryService(IRepositoryManager repositoryManager, IMapper mapper, EntityChecker entityChecker)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _entityChecker = entityChecker;
         }
 
         public ReferenceDTO CreateProductCategory(ProductCategoryForManipulationDTO categoryForManipulation)
@@ -35,14 +38,14 @@ namespace Service
 
         public void DeleteProductCategory(Guid categoryId, bool trackChanges)
         {
-            var category = GetProductCategoryAndCheckIfItExist(categoryId, trackChanges);
+            var category = _entityChecker.GetProductCategoryAndCheckIfItExist(categoryId, trackChanges);
             _repositoryManager.ProductCategory.DeleteProductCategory(category);
             _repositoryManager.Save();
         }
 
         public ReferenceDTO GetProductCategory(Guid categoryId, bool trackChanges)
         {
-            var category = GetProductCategoryAndCheckIfItExist(categoryId, trackChanges);
+            var category = _entityChecker.GetProductCategoryAndCheckIfItExist(categoryId, trackChanges);
             var categoryToReturn = _mapper.Map<ReferenceDTO>(category);
             return categoryToReturn;
         }
@@ -56,21 +59,12 @@ namespace Service
 
         public ReferenceDTO UpdateProductCategory(Guid categoryId, ProductCategoryForManipulationDTO categoryForManipulation, bool trackChanges)
         {
-            var category = GetProductCategoryAndCheckIfItExist(categoryId, trackChanges);
+            var category = _entityChecker.GetProductCategoryAndCheckIfItExist(categoryId, trackChanges);
             _mapper.Map(categoryForManipulation, category);
             _repositoryManager.Save();
 
             var categoryToReturn = _mapper.Map<ReferenceDTO>(category);
             return categoryToReturn;
-        }
-
-        private Productcategory GetProductCategoryAndCheckIfItExist(Guid categoryId, bool trackChanges)
-        {
-            var category = _repositoryManager.ProductCategory.GetProductCategory(categoryId, trackChanges);
-
-            if (category is null)
-                throw new GenericNotFoundException<Productcategory>(categoryId);
-            return category;
         }
     }
 }

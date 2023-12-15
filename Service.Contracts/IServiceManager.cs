@@ -12,5 +12,6 @@ namespace Service.Contracts
         IGenderService Gender { get; }
         IProductService Product { get; }
         IProductCategoryService ProductCategory { get; }
+        IPurchaseService Purchase { get; }
     }
 }

@@ -12,6 +12,7 @@ namespace Contracts
         IGenderRepository Gender { get; }
         IProductRepository Product { get; }
         IProductCategoryRepository ProductCategory { get; }
+        IPurchaseRepository Purchase { get; }
         void Save();
     }
 }

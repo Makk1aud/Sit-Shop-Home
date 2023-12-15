@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Service.Contracts;
+using Service.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,16 @@ namespace Service
         private readonly Lazy<IGenderService> _genderService;
         private readonly Lazy<IProductService> _productService;
         private readonly Lazy<IProductCategoryService> _productCategoryService;
+        private readonly Lazy<IPurchaseService> _purchaseService;
         public ServiceManager(IMapper mapper, IRepositoryManager repositoryManager)
         {
-            _customerService = new Lazy<ICustomerService>(() => new CustomerService(repositoryManager, mapper));
-            _genderService = new Lazy<IGenderService>(() => new GenderService(repositoryManager, mapper));
-            _productService = new Lazy<IProductService>(() => new ProductService(repositoryManager, mapper));
-            _productCategoryService = new Lazy<IProductCategoryService>(() => new ProductCategoryService(repositoryManager, mapper));
+            var entityChecker = new EntityChecker(repositoryManager);
+
+            _customerService = new Lazy<ICustomerService>(() => new CustomerService(repositoryManager, mapper, entityChecker));
+            _genderService = new Lazy<IGenderService>(() => new GenderService(repositoryManager, mapper, entityChecker));
+            _productService = new Lazy<IProductService>(() => new ProductService(repositoryManager, mapper, entityChecker));
+            _productCategoryService = new Lazy<IProductCategoryService>(() => new ProductCategoryService(repositoryManager, mapper, entityChecker));
+            _purchaseService = new Lazy<IPurchaseService>(() => new PurchaseService(repositoryManager, mapper, entityChecker));
         }
         public ICustomerService Customer => _customerService.Value;
 
@@ -29,5 +34,7 @@ namespace Service
         public IProductService Product => _productService.Value;
 
         public IProductCategoryService ProductCategory => _productCategoryService.Value;
+
+        public IPurchaseService Purchase => _purchaseService.Value;
     }
 }

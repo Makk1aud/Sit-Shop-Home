@@ -24,6 +24,10 @@ namespace SitShopHome.API
                 .ForMember("title", opts => opts.MapFrom(x => x.CategoryTitle))
                 .ForMember("id", opts => opts.MapFrom(x => x.ProductCategoryId));
             CreateMap<ProductCategoryForManipulationDTO, Productcategory>().ReverseMap();
+
+            CreateMap<PurchaseForCreationDTO, Purchase>();
+            CreateMap<PurchaseForUpdateDTO, Purchase>();
+            CreateMap<Purchase, PurchaseDTO>();
         }
     }
 }
