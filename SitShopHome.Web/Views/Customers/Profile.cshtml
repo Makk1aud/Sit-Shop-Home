@@ -1,0 +1,12 @@
+@model Shared.DataTransferObjects.CustomerDTO
+@{
+    ViewData["Title"] = $"Hello {@Model.CustomerFullName}";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="UserInformation">
+    <div>infromation about users</div>
+</div>
+
+<a asp-controller="Products" asp-action="CreateProduct" class="btn btn-outline-dark"> Create a product</a>
