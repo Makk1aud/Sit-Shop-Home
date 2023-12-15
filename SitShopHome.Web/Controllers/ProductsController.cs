@@ -1,6 +1,7 @@
 using JsonSendRequests.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using SitShopHome.Web.Models;
+using SitShopHome.Web.Models.PageViewModel;
 using SitShopHome.Web.Service;
 using SitShopHome.Web.Services;
 
@@ -9,7 +10,7 @@ namespace SitShopHome.Web.Controllers
     public class ProductsController : Controller
     {
 
-        private const int _PAGESIZE = 10;
+        private const int _PAGESIZE = 3;
         private readonly ILogger<ProductsController> _logger;
         private readonly IProductsJsonSendRequest _request;
         private readonly IProductCategoryJsonSendRequest _productCategoryRequest;
@@ -26,11 +27,14 @@ namespace SitShopHome.Web.Controllers
             _hostingEnvironment = host;
         }
 
-       public IActionResult MainPage()
+       public IActionResult MainPage(int pageNumber = 1)
        {
-            var productDTOList = _request.GetProductsOnPage(1,_PAGESIZE);
+            if(pageNumber <= 0)
+                pageNumber = 1;
+            var productDTOList = _request.GetProductsOnPage(pageNumber,_PAGESIZE);
             var productList = ConvertService.ConvertProductDTOtoViewModel(productDTOList);
-            return View(productList);
+            MainPageViewModel model = new(productList, pageNumber);
+            return View(model);
        }
         [HttpPost]
        public IActionResult ProductsPage(string id)
