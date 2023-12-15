@@ -54,6 +54,9 @@ namespace Service
 
         public (IEnumerable<ProductDTO> products, MetaData metaData) GetProducts(ProductsParameters productsParameters, bool trackChanges)
         {
+            if (!productsParameters.ValidRange)
+                throw new GenericBadRequestException<Product>("Max price cant be higher than min price");
+
             var productsWithMetaData = _repositoryManager.Product.GetProducts(productsParameters, trackChanges);
 
             var productsToReturn = _mapper.Map<IEnumerable<ProductDTO>>(productsWithMetaData);

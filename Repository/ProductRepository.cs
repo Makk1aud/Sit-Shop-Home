@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities.Models;
+using Repository.Extensions;
 using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,13 @@ namespace Repository
         public PagedList<Product> GetProducts(ProductsParameters productsParameters, bool trackChanges)
         {
             var products = FindAll(trackChanges)
+                .PriceFilter(productsParameters.MinPrice, productsParameters.MaxPrice)
+                .SearchFilter(productsParameters.SearchName)
+                .CategoryFilter(productsParameters.ProductCategoryId)
                 .Skip((productsParameters.PageNumber - 1) * productsParameters.PageSize)
                 .Take(productsParameters.PageSize)
                 .ToList();
+
             var count = FindAll(trackChanges)
                 .Count();
 
