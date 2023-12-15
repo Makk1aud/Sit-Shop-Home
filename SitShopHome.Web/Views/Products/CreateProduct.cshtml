@@ -37,7 +37,7 @@
     </div> 
     <div class="ProductBlock">
         <label >Price: </label>
-        <input type="number"  asp-for="Price" />
+        <input type="number" min="1" max="100000" asp-for="Price" />
         <span asp-validation-for="Price"></span>
     </div>
  
