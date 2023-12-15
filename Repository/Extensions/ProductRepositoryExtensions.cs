@@ -23,6 +23,6 @@ namespace Repository.Extensions
             products.Where(x => x.ProductPrice <= maxPrice && x.ProductPrice >= minPrice);
 
         public static IQueryable<Product> CategoryFilter(this IQueryable<Product> products, Guid? categoryId) =>
-            categoryId is null ? products : products.Where(x => x.ProductCategoryId.Equals(categoryId));
+            categoryId.Equals(Guid.Empty) ? products : products.Where(x => x.ProductCategoryId.Equals(categoryId));
     }
 }
