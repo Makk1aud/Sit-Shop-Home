@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<ICustomerJsonSendRequest, CustomerJsonSendRequest>();
     builder.Services.AddScoped<IProductsJsonSendRequest, ProductsJsonSendRequest>();
     builder.Services.AddScoped<IProductCategoryJsonSendRequest, ProductCategoryJsonSendRequest>();
+    builder.Services.AddScoped<IGenderJsonSendRequest, GenderJsonSendRequest>();
     
     builder.Services.AddTransient<CheckAuthMiddleware>();
     

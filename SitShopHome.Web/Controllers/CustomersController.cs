@@ -12,18 +12,27 @@ namespace SitShopHome.Web.Controllers
     {
         private readonly ILogger<CustomersController> _logger;
         private readonly ICustomerJsonSendRequest _customerJsonRequest;
-
-        public CustomersController(ILogger<CustomersController> logger, ICustomerJsonSendRequest customerJsonRequest)
+        private readonly IGenderJsonSendRequest _genderRequest;
+        public CustomersController(ILogger<CustomersController> logger,
+        ICustomerJsonSendRequest customerJsonRequest,
+        IGenderJsonSendRequest genderRequest)
         {
             _logger = logger;
             _customerJsonRequest = customerJsonRequest;
+            _genderRequest = genderRequest;
         }
 
-        public IActionResult Registration() => View();
+        public IActionResult Registration() 
+        {
+            ViewData["Genders"] = _genderRequest.GetAllObject();
+            return View();
+        }
 
         [HttpPost]
         public IActionResult Registration(CustomerForManipulationDTO? customerObj, DateOnly birthday)
         {
+
+            ViewData["Genders"] = _genderRequest.GetAllObject();
             if(customerObj == null)
                 return View();
             if(birthday == null)
@@ -44,7 +53,10 @@ namespace SitShopHome.Web.Controllers
             return RedirectToAction("LogInSystem");
         }
 
-        public IActionResult LogInSystem()=> View();
+        public IActionResult LogInSystem()
+        {
+            return View()  ;
+        } 
         
         [HttpPost]
         public IActionResult LogInSystem(CustomersToEnterViewModel customerObj)

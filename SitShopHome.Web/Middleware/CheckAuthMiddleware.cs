@@ -27,6 +27,7 @@ public class CheckAuthMiddleware : IMiddleware
           !(context.Request.Path.Value == "/" || context.Request.Path.Value == "/Customers/Registration"))
         {
             context.Response.Redirect("/");
+            return;
         }
         await next(context);
     }

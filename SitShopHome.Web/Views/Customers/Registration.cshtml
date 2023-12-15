@@ -1,6 +1,8 @@
+@using Shared.DataTransferObjects;
 @model Shared.DataTransferObjects.CustomerForManipulationDTO
 @{
     ViewData["Title"] = "Registration";
+    var genderList = ViewData["Genders"] as IEnumerable<GenderDTO>;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -33,7 +35,12 @@
 
         <div class="blockInput">
             <label>Enter your Gender</label>
-            <input type="text" asp-for="GenderId"/>
+            <select asp-for="GenderId">
+                @foreach(var gender in genderList) {
+                    <option value="@gender.GenderId">@gender.GenderTitle</option>
+                }
+
+            </select>
             <span asp-validation-for="GenderId"></span>
         </div>
 
