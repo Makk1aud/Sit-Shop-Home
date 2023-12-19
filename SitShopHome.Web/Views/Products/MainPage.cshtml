@@ -5,6 +5,22 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+<form method="post" asp-action="SearchingProducts">
+<input hidden asp-for="Products" value="@Model.Products"/>
+    <div class="searching-panel">
+        <div class="prices-panel">
+            <div class="price">
+                <label>min price</label>
+                <input min=0 max=1000000 type="number" asp-for="MinPrice"/>
+            </div>
+            <div class="price">
+                <label>max price</label>
+                <input min=0 max=1000000 type="number" asp-for="MaxPrice"/>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
 
 @if(Model.Products.Count == 0)
 {
@@ -30,11 +46,16 @@
     @if(Model.HasPreviousPage)
     {
         <a asp-action="MainPage" 
-        asp-route-pageNumber="@(Model.PageNumber - 1)" class="glyphicon glyphicon-chevron-left">Back</a>
+        asp-route-pageNumber="@(Model.PageNumber - 1)" 
+        asp-route-minPrice="@Model.MinPrice"
+        asp-route-maxPrice="@Model.MaxPrice"
+        class="glyphicon glyphicon-chevron-left">Back</a>
     }
     @if(Model.HasNextPage)
     {
         <a asp-action="MainPage" 
+        asp-route-minPrice="@Model.MinPrice"
+        asp-route-maxPrice="@Model.MaxPrice"
         asp-route-pageNumber="@(Model.PageNumber + 1)" class="glyphicon glyphicon-chevron-right">Next </a>
     }
 </p>

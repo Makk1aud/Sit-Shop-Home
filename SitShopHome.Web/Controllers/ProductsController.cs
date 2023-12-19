@@ -27,17 +27,30 @@ namespace SitShopHome.Web.Controllers
             _hostingEnvironment = host;
         }
 
-       public IActionResult MainPage(int pageNumber = 1)
+       public IActionResult MainPage(int pageNumber = 1, int? minPrice =null, int? maxPrice =null)
        {
             if(pageNumber <= 0)
                 pageNumber = 1;
-            var productDTOList = _request.GetProductsOnPage(pageNumber,_PAGESIZE);
+            var productDTOList = _request.GetProductsOnPage(pageNumber,_PAGESIZE, minPrice, maxPrice);
             var productList = ConvertService.ConvertProductDTOtoViewModel(productDTOList);
-            MainPageViewModel model = new(productList, pageNumber);
+            MainPageViewModel model = new();
+            model.PageNumber = pageNumber;
+            model.Products = productList;
+            model.MaxPrice = maxPrice;
+            model.MinPrice = minPrice;
             return View(model);
        }
+    
+        [HttpPost]
+       public IActionResult SearchingProducts(MainPageViewModel model)
+       {
 
-       
+            return RedirectToAction("MainPage", new {pageNumber = model.PageNumber,
+                                                     minPrice = model.MinPrice,
+                                                     maxPrice = model.MaxPrice});
+       }
+
+
         [HttpPost]
        public IActionResult ProductsPage(string id)
        {
