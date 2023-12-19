@@ -36,6 +36,8 @@ namespace SitShopHome.Web.Controllers
             MainPageViewModel model = new(productList, pageNumber);
             return View(model);
        }
+
+       
         [HttpPost]
        public IActionResult ProductsPage(string id)
        {
