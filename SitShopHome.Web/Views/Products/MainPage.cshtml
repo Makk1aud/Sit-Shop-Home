@@ -1,7 +1,9 @@
+@using Shared.DataTransferObjects;
 @using SitShopHome.Web.Models.PageViewModel;
 @model MainPageViewModel
 @{
     ViewData["Title"] = "Main page products";
+    var listCategory = ViewData["Category"] as IEnumerable<ProductCategoryDTO>;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -17,6 +19,20 @@
                 <label>max price</label>
                 <input min=0 max=1000000 type="number" asp-for="MaxPrice"/>
             </div>
+            <div class="product-category">
+                <label>category</label>
+                <select asp-for="ProductCategoryId">
+                <option value="@null">...</option>
+                @foreach(var category in listCategory)
+                {
+                    <option value="@category.ProductCategoryId">@category.ProductCategoriesTitle</option>
+                }
+                </select>
+            </div>
+            <div class="searching-pole">
+                <label>Search by name</label>
+                <input type="text" asp-for="SearchName"/>
+            </div>
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Search</button>
@@ -26,6 +42,8 @@
 {
     <div> NO PRODUCTS ANYMORE!!!! </div>
 }
+
+<span>@ViewBag.ExistInCart</span>
 @foreach(var item in Model.Products)
 {
     <div class="card" style="width: 18rem;">
@@ -37,8 +55,18 @@
                 <input name="id" type="text" value="@item.ProductId" hidden/>
                 <button class="btn btn-primary" type="submit">See more</button>
             </form>
-            <a class="btn btn-primary">BUY</a>
+            
+                <a asp-action="MainPage" 
+                asp-route-pageNumber="@(Model.PageNumber)" 
+                asp-route-minPrice="@Model.MinPrice"
+                asp-route-maxPrice="@Model.MaxPrice"
+                asp-route-searchName="@Model.SearchName"
+                asp-route-category="@Model.ProductCategoryId"
+                asp-route-productId="@item.ProductId"
+                class="btn btn-primary">
+                BUY</a>
         </div>
+
     </div>
     <p></p>
 }
@@ -49,6 +77,8 @@
         asp-route-pageNumber="@(Model.PageNumber - 1)" 
         asp-route-minPrice="@Model.MinPrice"
         asp-route-maxPrice="@Model.MaxPrice"
+        asp-route-searchName="@Model.SearchName"
+        asp-route-category="@Model.ProductCategoryId"
         class="glyphicon glyphicon-chevron-left">Back</a>
     }
     @if(Model.HasNextPage)
@@ -56,6 +86,8 @@
         <a asp-action="MainPage" 
         asp-route-minPrice="@Model.MinPrice"
         asp-route-maxPrice="@Model.MaxPrice"
+        asp-route-searchName="@Model.SearchName"
+        asp-route-category="@Model.ProductCategoryId"
         asp-route-pageNumber="@(Model.PageNumber + 1)" class="glyphicon glyphicon-chevron-right">Next </a>
     }
 </p>
@@ -64,4 +96,6 @@
 .glyphicon { display: inline-block; padding:0 5px;}
 .glyphicon-chevron-right:after { content: "\00BB"; }
 .glyphicon-chevron-left:before { content: "\00AB"; }
+
+span{color:red;}
 </style>

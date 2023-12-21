@@ -27,27 +27,56 @@ namespace SitShopHome.Web.Controllers
             _hostingEnvironment = host;
         }
 
-       public IActionResult MainPage(int pageNumber = 1, int? minPrice =null, int? maxPrice =null)
+       public IActionResult MainPage(int pageNumber = 1, 
+       int? minPrice =null, 
+       int? maxPrice =null,
+       string? searchName = null,
+       Guid? category = null,
+       Guid? productId = null)
        {
-            if(pageNumber <= 0)
+            if(productId != null)
+            {
+                if(!GlobalData.ListProductsForPurchases.Contains(Guid.Parse(productId.ToString()!)))
+                    GlobalData.ListProductsForPurchases.Add(Guid.Parse(productId.ToString()!));
+                else
+                    ViewBag.ExistInCart = "This product has already add in cart";
+ 
+            }
+           if(pageNumber <= 0)
                 pageNumber = 1;
-            var productDTOList = _request.GetProductsOnPage(pageNumber,_PAGESIZE, minPrice, maxPrice);
+            if(minPrice > maxPrice)
+            {
+                minPrice = maxPrice;
+                maxPrice = minPrice;
+            }
+            var productDTOList = _request.GetProductsOnPage(pageNumber,_PAGESIZE, minPrice, maxPrice,searchName,category);
             var productList = ConvertService.ConvertProductDTOtoViewModel(productDTOList);
             MainPageViewModel model = new();
             model.PageNumber = pageNumber;
             model.Products = productList;
             model.MaxPrice = maxPrice;
             model.MinPrice = minPrice;
+            model.SearchName = searchName;
+            model.ProductCategoryId = category;
+            ViewData["Category"] = _productCategoryRequest.GetAllObject();
             return View(model);
        }
-    
+
+       public IActionResult AddProductToCart(Guid productId)
+       {
+        System.Console.WriteLine(productId.ToString());
+        return Ok();
+       }
+
         [HttpPost]
        public IActionResult SearchingProducts(MainPageViewModel model)
        {
 
             return RedirectToAction("MainPage", new {pageNumber = model.PageNumber,
                                                      minPrice = model.MinPrice,
-                                                     maxPrice = model.MaxPrice});
+                                                     maxPrice = model.MaxPrice,
+                                                     searchName = model.SearchName,
+                                                     category = model.ProductCategoryId});
        }
 
 
