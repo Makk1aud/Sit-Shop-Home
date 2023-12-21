@@ -35,11 +35,22 @@ public class ProductsJsonSendRequest : IProductsJsonSendRequest
         return product;
     }
 
-    public IEnumerable<ProductDTO>? GetProductsOnPage(int pageNumber, int pageSize)
+    
+
+    public IEnumerable<ProductDTO>? GetProductsOnPage(int pageNumber, int pageSize, int? minPrice = null, int? maxPrice = null, string? searchName = null, Guid? productCategoryId = null)
     {
         string url = _baseUrl +$"?PageNumber={pageNumber}&PageSize={pageSize}";
+        if(minPrice != null)
+            url += "&MinPrice=" + minPrice; 
+        if(maxPrice != null)
+            url += "&MaxPrice=" + maxPrice; 
+        if(searchName != null)
+            url += "&SearchName=" + searchName;
+        if(productCategoryId != null)
+            url += "&ProductCategoryId=" + productCategoryId;
+
         var response = JsonService.HttpGetRequest(url);
         var productList = JsonSerializer.Deserialize<IEnumerable<ProductDTO>>(response.ToString());
-        return productList;
+        return productList;   
     }
 }
