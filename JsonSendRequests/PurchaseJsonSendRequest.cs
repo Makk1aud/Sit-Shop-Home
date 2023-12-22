@@ -22,6 +22,14 @@ public class PurchaseJsonSendRequest : IPurchaseJsonSendRequest
         throw new NotImplementedException();
     }
 
+    public IEnumerable<PurchaseDTO> GetAllCustomersPurchases(Guid customerId, string token)
+    {
+        string url = _baseUrl + '/' + customerId.ToString() + "/purchases";
+        var response = JsonService.HttpGetRequest(url, token);
+        var purchases = JsonSerializer.Deserialize<IEnumerable<PurchaseDTO>>(response.ToString());
+        return purchases;
+    }
+
     public IEnumerable<PurchaseDTO>? GetAllObject(string? token = null)
     {
         throw new NotImplementedException();

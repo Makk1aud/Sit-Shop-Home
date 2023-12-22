@@ -53,7 +53,7 @@ namespace SitShopHome.Web.Controllers
                     return View();
                 }
             }
-
+            GlobalData.ListProductsForPurchases.Clear();
             return RedirectToAction("MainPage", "Products");
         }
 
@@ -74,6 +74,26 @@ namespace SitShopHome.Web.Controllers
             return View(model);
         } 
 
+        public IActionResult SeePurchases()
+        {
+            Guid customerId = (GlobalData.Application["Customer"] as CustomerDTO)!.CustomerId;
+            string token = GlobalData.Application["Token"].ToString()!;
+
+            var purchases = _purchaseRequest.GetAllCustomersPurchases(customerId, token);
+            var productList = new List<PurchasesViewModel>();
+            foreach(var purchase in purchases)
+            {
+                var product = _productRequest.GetObject(purchase.ProductId);
+                var cartProduct = ConvertService.ConvertOneProductDTOtoViewModel(product);
+                var tempPurchase = new PurchasesViewModel()
+                {
+                    Product = cartProduct,
+                    DateBuying = purchase.PurchaseDate 
+                };
+                productList.Add(tempPurchase);
+            }
+            return View(productList);
+        }
         [HttpPost]
         public IActionResult RemoveProductFromCart(Guid productId)
         {
