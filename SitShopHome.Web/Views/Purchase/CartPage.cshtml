@@ -16,6 +16,11 @@
                 <input name="id" type="text" value="@item.ProductId" hidden/>
                 <button class="btn btn-primary" type="submit">See more</button>
             </form>
+
+            <form method="post" asp-action="RemoveProductFromCart">
+                <input hidden name="productId" value="@item.ProductId" />
+                <button class="btn btn-secondary" type="submit">remove</button>
+            </form>
         </div>
     </div>
 }
@@ -24,6 +29,7 @@
 
 <div class="total-cost">
    Total: @Model.TotalCost 
+   <a asp-action="BuyingPage" class="btn btn-info">buy products</a>
 </div>
 
 <style>

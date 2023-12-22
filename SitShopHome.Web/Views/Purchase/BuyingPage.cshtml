@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Please, enter your card number";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+<div class="card">
+    <input type="text" minlength="16" maxlength="16" name="card">
+    <button class="btn btn-success" type="submit">buy</button>
+</div>
+</form>
+<span style="color:red">@ViewBag.Wrong</span>
+
