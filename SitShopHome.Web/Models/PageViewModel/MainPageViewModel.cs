@@ -10,11 +10,10 @@ public class MainPageViewModel
     public int TotalCountOnPage {get;set;}
     public bool HasPreviousPage => PageNumber > 1;
     public bool HasNextPage => Products.Count > 1 ;
+    
+    public int? MinPrice {get;set;}
+    public int? MaxPrice {get;set;}
+    public string? SearchName {get;set;}
+    public Guid? ProductCategoryId {get;set;}
 
-    public MainPageViewModel(List<MainPageProductViewModel> products, int pageNumber)
-    {
-        Products = products;
-        PageNumber = pageNumber;
-     
-    }
 }

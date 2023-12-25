@@ -10,32 +10,32 @@
 <form method="post">
     <div class="panel">
         <div class="blockInput">
-            <label>Enter your name</label>
-            <input type="text" asp-for="CustomerName"/>
+            <label class="form-label mt-4">Enter your name</label>
+            <input class="form-control" type="text" asp-for="CustomerName"/>
             <span asp-validation-for="CustomerName"></span>
         </div>
 
         <div class="blockInput">
-            <label>Enter your surname</label>
-            <input type="text" asp-for="CustomerSurname"/>
+            <label class="form-label mt-4">Enter your surname</label>
+            <input class="form-control" type="text" asp-for="CustomerSurname"/>
             <span asp-validation-for="CustomerSurname"></span>
         </div>
         
         <div class="blockInput">
-            <label>Enter your phone</label>
-            <input type="text" asp-for="CustomerPhone"/>
+            <label class="form-label mt-4">Enter your phone</label>
+            <input class="form-control" type="text" asp-for="CustomerPhone"/>
             <span asp-validation-for="CustomerPhone"></span>
         </div>
 
         <div class="blockInput">
-            <label>Enter your email</label>
-            <input type="text" asp-for="CustomerEmail"/>
+            <label class="form-label mt-4">Enter your email</label>
+            <input class="form-control" type="text" asp-for="CustomerEmail"/>
             <span asp-validation-for="CustomerEmail"></span>
         </div>
 
         <div class="blockInput">
-            <label>Enter your Gender</label>
-            <select asp-for="GenderId">
+            <label class="form-label mt-4">Choose your Gender</label>
+            <select asp-for="GenderId" class="form-control">
                 @foreach(var gender in genderList) {
                     <option value="@gender.GenderId">@gender.GenderTitle</option>
                 }
@@ -45,21 +45,21 @@
         </div>
 
         <div class="blockInput">
-            <label>Enter your password</label>
-            <input type="text" asp-for="CustomerPassword"/>
+            <label class="form-label mt-4">Enter your password</label>
+            <input class="form-control" type="password" asp-for="CustomerPassword"/>
             <span asp-validation-for="CustomerPassword"></span>
         </div>
 
         <div class="blockInput">
-            <label>Enter your birthday</label>
-            <input type="date" name="birthday"/>
+            <label class="form-label mt-4">Enter your birthday</label>
+            <input class="form-control" type="date" name="birthday"/>
             <span>@ViewBag.BirthIsEmpty</span>
         </div>
 
-
+        <br><br>
         <div class="blockButtons">
-            <button type="submit" class="btn btn-primary">Register</button>
-            <a class="btn btn-secondary" asp-controller="Customers" asp-action="LogInSystem">Go Back</a>
+            <button type="submit" class="btn btn-primary btn-lg">Register</button>
+            <a class="btn btn-secondary btn-lg" asp-controller="Customers" asp-action="LogInSystem">Go Back</a>
             <span>@ViewBag.NotOk</span>
         </div>
     </div>    
