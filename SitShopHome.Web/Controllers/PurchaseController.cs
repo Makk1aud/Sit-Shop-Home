@@ -29,12 +29,17 @@ namespace SitShopHome.Web.Controllers
 
         public IActionResult BuyingPage()
         {
+            if(GlobalData.ListProductsForPurchases.Count==0)
+            {
+                return RedirectToAction("CartPage");
+            }
             return View();
         }
 
         [HttpPost]
         public IActionResult BuyingPage(string card)
         {
+            
             foreach(var productId in GlobalData.ListProductsForPurchases)
             {
                 var purchase = new PurchaseForCreationDTO()
