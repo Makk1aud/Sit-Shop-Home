@@ -10,7 +10,6 @@
 <form method="post" asp-action="SearchingProducts">
 <input hidden asp-for="Products" value="@Model.Products"/>
     <div class="searching-panel">
-        <div class="prices-panel">
             <div class="price">
                 <label>min price</label>
                 <input min=0 max=1000000 type="number" asp-for="MinPrice"/>
@@ -33,11 +32,10 @@
                 <label>Search by name</label>
                 <input type="text" asp-for="SearchName"/>
             </div>
-        </div>
     </div>
     <button type="submit" class="btn btn-primary">Search</button>
 </form>
-
+<br><br>
 @if(Model.Products.Count == 0)
 {
     <div> NO PRODUCTS ANYMORE!!!! </div>
@@ -51,21 +49,23 @@
         <div class="card-body">
             <h5 class="card-title">@item.ProductTitle</h5>
             <p class="card-text">Cost: @item.ProductPrice rub</p>
-            <form method="post" asp-action="ProductsPage">
-                <input name="id" type="text" value="@item.ProductId" hidden/>
-                <button class="btn btn-primary" type="submit">See more</button>
-            </form>
-            
-                <a asp-action="MainPage" 
-                asp-route-pageNumber="@(Model.PageNumber)" 
-                asp-route-minPrice="@Model.MinPrice"
-                asp-route-maxPrice="@Model.MaxPrice"
-                asp-route-searchName="@Model.SearchName"
-                asp-route-category="@Model.ProductCategoryId"
-                asp-route-productId="@item.ProductId"
-                class="btn btn-primary">
-                BUY</a>
-        </div>
+            <div class="card-body-buttons">
+                <form method="post" asp-action="ProductsPage">
+                    <input name="id" type="text" value="@item.ProductId" hidden/>
+                    <button class="btn btn-primary" type="submit">See more</button>
+                </form>
+                    <a asp-action="MainPage" 
+                    asp-route-pageNumber="@(Model.PageNumber)" 
+                    asp-route-minPrice="@Model.MinPrice"
+                    asp-route-maxPrice="@Model.MaxPrice"
+                    asp-route-searchName="@Model.SearchName"
+                    asp-route-category="@Model.ProductCategoryId"
+                    asp-route-productId="@item.ProductId"
+                    class="btn btn-primary">
+                    BUY</a>
+    
+            </div>
+       </div>
 
     </div>
     <p></p>
@@ -98,4 +98,15 @@
 .glyphicon-chevron-left:before { content: "\00AB"; }
 
 span{color:red;}
+.searching-panel div{
+    display: inline;
+    margin:10px;
+    margin-top:10px
+}
+
+.card-body-buttons > *:first-child{
+    display: inline-block;
+    margin-right: 10px
+}
+
 </style>

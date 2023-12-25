@@ -12,16 +12,19 @@
         <div class="card-body">
             <h5 class="card-title">@item.ProductTitle</h5>
             <p class="card-text">Cost: @item.ProductPrice rub</p>
-            <form method="post" asp-controller="Products" asp-action="ProductsPage">
-                <input name="id" type="text" value="@item.ProductId" hidden/>
-                <button class="btn btn-primary" type="submit">See more</button>
-            </form>
+            <div class="card-body-buttons">
+                <form method="post" asp-controller="Products" asp-action="ProductsPage">
+                    <input name="id" type="text" value="@item.ProductId" hidden/>
+                    <button class="btn btn-primary" type="submit">See more</button>
+                </form>
 
-            <form method="post" asp-action="RemoveProductFromCart">
-                <input hidden name="productId" value="@item.ProductId" />
-                <button class="btn btn-secondary" type="submit">remove</button>
-            </form>
-        </div>
+                <form method="post" asp-action="RemoveProductFromCart">
+                    <input hidden name="productId" value="@item.ProductId" />
+                    <button class="btn btn-secondary" type="submit">remove</button>
+                </form>
+    
+            </div>
+       </div>
     </div>
 }
 </div>
@@ -33,11 +36,13 @@
 </div>
 
 <style>
-
-
     .card{
         display: inline-block;
         margin-right: 10px;
         margin-bottom: 10px;
+    }
+    .card-body-buttons form {
+        display: inline-block;
+        margin-right: 10px
     }
 </style>
