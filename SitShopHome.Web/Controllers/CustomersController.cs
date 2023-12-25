@@ -55,7 +55,19 @@ namespace SitShopHome.Web.Controllers
 
         public IActionResult LogInSystem()
         {
-            return View()  ;
+            
+            var cookie = new CookieOptions();
+            if(!Request.Cookies.ContainsKey("Token") || !Request.Cookies.ContainsKey("CustomerId"))
+            {
+                return View();
+            }
+            
+            GlobalData.Application["Token"] = Request.Cookies["Token"]!;
+            Guid customerId = Guid.Parse(Request.Cookies["CustomerId"]!);
+            var customer = _customerJsonRequest.GetCustomer(customerId, GlobalData.Application["Token"].ToString()!);
+            GlobalData.Application["Customer"] = customer!;
+             
+            return RedirectToAction("MainPage", "Products");
         } 
         
         [HttpPost]
@@ -70,6 +82,7 @@ namespace SitShopHome.Web.Controllers
             {
                 customer = _customerJsonRequest.FindCustomer(customerObj.LoginEmail, customerObj.Password, out string token);
                 GlobalData.Application["Token"] = token ?? "No token";
+                Response.Cookies.Append("Token", token?.ToString() ?? "No token");
             }
             catch (Exception e)
             {
@@ -78,6 +91,8 @@ namespace SitShopHome.Web.Controllers
             }
             
             GlobalData.Application["Customer"] = customer!;
+            Response.Cookies.Append("CustomerId", customer!.CustomerId.ToString());
+
             return RedirectToAction("MainPage", "Products");
         }
 
@@ -86,7 +101,14 @@ namespace SitShopHome.Web.Controllers
             var customer = GlobalData.Application["Customer"] as CustomerDTO;
             return View(customer);
         }
-
+        public IActionResult Exit()
+        {
+            Response.Cookies.Delete("CustomerId");
+            Response.Cookies.Delete("Token");
+            GlobalData.Application.Clear();
+            GlobalData.ListProductsForPurchases.Clear();
+            return RedirectToAction("LogInSystem");
+        }
         
        
 
