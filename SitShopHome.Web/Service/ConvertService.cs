@@ -22,6 +22,17 @@ public static class ConvertService
 
         return productList;
     }
+    public static MainPageProductViewModel ConvertOneProductDTOtoViewModel(ProductDTO productDTO)
+    {
+        var product = new MainPageProductViewModel()
+        {
+            ProductId = productDTO.ProductId,
+            ProductImage = productDTO.ProductImage,
+            ProductPrice = productDTO.ProductPrice,
+            ProductTitle = productDTO.ProductTitle
+        };
+        return product;
+    }
 
     public static ProductForManipulationDTO ConvertProductViewModelToDTO(ProductViewModel model, string imagePath)
     {

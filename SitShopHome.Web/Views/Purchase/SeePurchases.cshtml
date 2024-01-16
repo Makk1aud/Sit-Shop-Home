@@ -1,0 +1,30 @@
+@model List<PurchasesViewModel>
+@{
+    ViewData["Title"] = "Your purchases";
+}
+
+<h1>@ViewData["Title"]</h1>
+@foreach(var item in Model)
+{
+<div class="card" style="width: 18rem;">
+        <img src="~/@item.Product.ProductImage" class="card-img-top">
+        <div class="card-body">
+            <h5 class="card-title">@item.Product.ProductTitle</h5>
+            <p class="card-text">Cost: @item.Product.ProductPrice rub</p>
+            <p>Date of buying @item.DateBuying</p>
+            <form method="post" asp-controller="Products" asp-action="ProductsPage">
+                <input name="id" type="text" value="@item.Product.ProductId" hidden/>
+                <button class="btn btn-primary" type="submit">See more</button>
+            </form>
+        </div>
+</div>
+
+}
+
+<style>
+    .card{
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+</style>

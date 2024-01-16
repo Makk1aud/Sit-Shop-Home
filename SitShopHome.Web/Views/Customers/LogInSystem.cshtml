@@ -8,18 +8,18 @@
 
     <div class="Panel">
         <div class="BlockInput">
-            <label> Enter your login</label>
-            <input asp-for="LoginEmail"/> 
+            <label class="form-label mt-4"> Enter your login</label>
+            <input asp-for="LoginEmail" class="form-control"/> 
             <span asp-validation-for="LoginEmail"></span>
         </div>
         <div class="BlockInput">
-            <label> Enter your password</label>
-            <input asp-for="Password"/> 
+            <label class="form-label mt-4"> Enter your password</label>
+            <input type="password"asp-for="Password" class="form-control"/> 
             <span asp-validation-for="Password"></span>
         </div>
 
         <div class="BlockButtons">
-            <button class="btn btn-primary" type="submit">Log In</button>
+            <button class="btn btn-primary btn-lg" type="submit">Log In</button>
             <span>@ViewBag.NotFound</span>
         </div>
         <a asp-action="Registration">Not an account?</a>
@@ -30,5 +30,9 @@
 <style>
     span{
         color:red;
+    }
+
+    .BlockButtons{
+        margin-top: 20px;
     }
 </style>
